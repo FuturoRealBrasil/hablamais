@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Level, Track } from "./course-data";
+import type { SrsMap } from "./vocabulary";
 import { LESSONS, lessonsForLevel } from "./course-data";
 
 export type Profile = {
@@ -55,6 +56,10 @@ export const defaultState: AppState = {
   completedLessons: [],
   learnedWords: [],
   history: [],
+  srs: {},
+  pronunciation: {},
+  weakSounds: [],
+  grammarDone: [],
 };
 
 type Ctx = {
