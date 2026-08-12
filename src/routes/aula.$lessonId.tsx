@@ -1,13 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowLeft, BookOpen, Check, Mic, Volume2, X } from "lucide-react";
+import { ArrowLeft, BookOpen, Check, MessagesSquare, Mic, RotateCcw, Trophy, Volume2, X } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { AiChat } from "@/components/ai-chat";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { LESSONS, TRACK_LABEL } from "@/lib/course-data";
 import { useProgress } from "@/lib/progress-store";
 import { normalize, speakSpanish } from "@/lib/speech";
+
 
 export const Route = createFileRoute("/aula/$lessonId")({
   head: () => ({
@@ -30,7 +32,7 @@ function LessonPage() {
   const { state, completeLesson } = useProgress();
   const lesson = useMemo(() => LESSONS.find((l) => l.id === lessonId), [lessonId]);
 
-  const [phase, setPhase] = useState<"study" | "practice" | "done">("study");
+  const [phase, setPhase] = useState<"study" | "practice" | "conversa" | "revisao" | "teste" | "done">("study");
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [typed, setTyped] = useState("");
@@ -48,8 +50,18 @@ function LessonPage() {
     );
   }
 
-  const exercise = lesson.exercises[index]!;
+  const questions = phase === "teste" ? [...lesson.exercises].reverse() : lesson.exercises;
+  const exercise = questions[index]!;
   const variant = state.profile.variant;
+  const isQuiz = phase === "practice" || phase === "teste";
+
+  function resetQuiz() {
+    setIndex(0);
+    setSelected(null);
+    setTyped("");
+    setChecked(false);
+    setCorrectCount(0);
+  }
 
   function isCorrect() {
     if (!exercise) return false;
@@ -64,8 +76,13 @@ function LessonPage() {
   function handleCheck() {
     if (checked) {
       const nextIndex = index + 1;
-      if (nextIndex >= lesson!.exercises.length) {
-        const accuracy = Math.round((correctCount / lesson!.exercises.length) * 100);
+      if (nextIndex >= questions.length) {
+        if (phase === "practice") {
+          resetQuiz();
+          setPhase("conversa");
+          return;
+        }
+        const accuracy = Math.round((correctCount / questions.length) * 100);
         completeLesson({
           lessonId: lesson!.id,
           title: lesson!.title,
@@ -89,6 +106,7 @@ function LessonPage() {
 
   if (phase === "done") {
     const accuracy = Math.round((correctCount / lesson.exercises.length) * 100);
+
     return (
       <AppShell>
         <div className="shadow-soft mx-auto max-w-md rounded-3xl border border-border bg-card p-8 text-center">
@@ -174,11 +192,85 @@ function LessonPage() {
             Praticar agora ({lesson.exercises.length} exercícios)
           </Button>
         </div>
+      ) : phase === "conversa" ? (
+        <div className="space-y-4">
+          <section className="shadow-soft rounded-3xl border border-border bg-card p-6">
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <MessagesSquare className="h-5 w-5 text-primary" /> Conversação da aula
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">
+              Use o que você acabou de aprender ({lesson.grammar.title}) conversando com o professor de IA. Ele corrige
+              seus erros e explica em português.
+            </p>
+          </section>
+          <AiChat
+            scenario={`Prática da aula “${lesson.title}”`}
+            scenarioPrompt={`Pratique com o aluno o tema da aula: ${lesson.grammar.title}. ${lesson.grammar.body} Use o vocabulário: ${lesson.vocab
+              .map((v) => v.es)
+              .join(", ")}.`}
+            opener={lesson.grammar.examples[0]?.es ?? "¡Hola! ¿Empezamos?"}
+          />
+          <Button className="w-full" onClick={() => setPhase("revisao")}>
+            Ir para a revisão
+          </Button>
+        </div>
+      ) : phase === "revisao" ? (
+        <div className="space-y-5">
+          <section className="shadow-soft rounded-3xl border border-border bg-card p-6">
+            <h2 className="flex items-center gap-2 text-lg font-semibold">
+              <RotateCcw className="h-5 w-5 text-primary" /> Revisão rápida
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">{lesson.grammar.body}</p>
+            <ul className="mt-4 space-y-2">
+              {lesson.grammar.examples.map((ex) => (
+                <li key={ex.es} className="flex items-center justify-between gap-3 rounded-xl bg-secondary/60 px-3 py-2">
+                  <div>
+                    <p className="font-medium">{ex.es}</p>
+                    <p className="text-xs text-muted-foreground">{ex.pt}</p>
+                  </div>
+                  <Button size="icon" variant="ghost" onClick={() => speakSpanish(ex.es, variant)} aria-label="Ouvir">
+                    <Volume2 className="h-4 w-4" />
+                  </Button>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 grid gap-2 sm:grid-cols-2">
+              {lesson.vocab.map((v) => (
+                <button
+                  key={v.es}
+                  onClick={() => speakSpanish(v.es, variant)}
+                  className="flex items-center justify-between rounded-xl border border-border px-3 py-2 text-left hover:bg-secondary"
+                >
+                  <span>
+                    <span className="block font-medium">{v.es}</span>
+                    <span className="block text-xs text-muted-foreground">{v.pt}</span>
+                  </span>
+                  <Volume2 className="h-4 w-4 text-muted-foreground" />
+                </button>
+              ))}
+            </div>
+          </section>
+          <Button
+            className="w-full"
+            onClick={() => {
+              resetQuiz();
+              setPhase("teste");
+            }}
+          >
+            <Trophy className="mr-2 h-4 w-4" /> Fazer o teste final
+          </Button>
+        </div>
       ) : (
         <div className="shadow-soft rounded-3xl border border-border bg-card p-6">
-          <Progress value={((index + (checked ? 1 : 0)) / lesson.exercises.length) * 100} className="h-2" />
+          {phase === "teste" && (
+            <p className="mb-2 flex items-center gap-2 text-sm font-semibold">
+              <Trophy className="h-4 w-4 text-primary" /> Teste final da aula
+            </p>
+          )}
+          <Progress value={((index + (checked ? 1 : 0)) / questions.length) * 100} className="h-2" />
           <p className="mt-3 text-xs uppercase tracking-wide text-muted-foreground">{exercise.prompt}</p>
           <p className="font-display mt-1 text-xl">{exercise.question}</p>
+
 
           {(exercise.kind === "listen" || exercise.kind === "speak") && (
             <Button
