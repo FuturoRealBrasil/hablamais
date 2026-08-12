@@ -25,7 +25,7 @@ export const Route = createFileRoute("/aulas")({
 
 function AulasPage() {
   const { state, hydrated } = useProgress();
-  const order: Level[] = ["A1", "A2", "B1", "B2", "C1"];
+  const order: Level[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
   const userIdx = order.indexOf(state.profile.level);
 
   return (

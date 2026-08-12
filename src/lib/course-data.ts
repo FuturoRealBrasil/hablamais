@@ -598,7 +598,7 @@ export function levelFromScore(score: number): Level {
 }
 
 export function lessonsForLevel(level: Level) {
-  const order: Level[] = ["A1", "A2", "B1", "B2", "C1"];
+  const order: Level[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
   const start = order.indexOf(level);
   return LESSONS.filter((l) => order.indexOf(l.level) >= start);
 }
