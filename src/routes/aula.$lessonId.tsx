@@ -358,7 +358,14 @@ function LessonPage() {
             }
             onClick={handleCheck}
           >
-            {checked ? (index + 1 >= lesson.exercises.length ? "Concluir aula" : "Próximo") : "Verificar"}
+            {checked
+              ? index + 1 >= questions.length
+                ? phase === "practice"
+                  ? "Ir para a conversação"
+                  : "Concluir aula"
+                : "Próximo"
+              : "Verificar"}
+
           </Button>
         </div>
       )}
