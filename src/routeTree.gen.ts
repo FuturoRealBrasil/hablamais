@@ -10,33 +10,73 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AulasRouteImport } from './routes/aulas'
+import { Route as ComecarRouteImport } from './routes/comecar'
+import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as AulaLessonIdRouteImport } from './routes/aula.$lessonId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AulasRoute = AulasRouteImport.update({
+  id: '/aulas',
+  path: '/aulas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ComecarRoute = ComecarRouteImport.update({
+  id: '/comecar',
+  path: '/comecar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PerfilRoute = PerfilRouteImport.update({
+  id: '/perfil',
+  path: '/perfil',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AulaLessonIdRoute = AulaLessonIdRouteImport.update({
+  id: '/aula/$lessonId',
+  path: '/aula/$lessonId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/aulas': typeof AulasRoute
+  '/comecar': typeof ComecarRoute
+  '/perfil': typeof PerfilRoute
+  '/aula/$lessonId': typeof AulaLessonIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/aulas': typeof AulasRoute
+  '/comecar': typeof ComecarRoute
+  '/perfil': typeof PerfilRoute
+  '/aula/$lessonId': typeof AulaLessonIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/aulas': typeof AulasRoute
+  '/comecar': typeof ComecarRoute
+  '/perfil': typeof PerfilRoute
+  '/aula/$lessonId': typeof AulaLessonIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/aulas' | '/comecar' | '/perfil' | '/aula/$lessonId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/aulas' | '/comecar' | '/perfil' | '/aula/$lessonId'
+  id: '__root__' | '/' | '/aulas' | '/comecar' | '/perfil' | '/aula/$lessonId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AulasRoute: typeof AulasRoute
+  ComecarRoute: typeof ComecarRoute
+  PerfilRoute: typeof PerfilRoute
+  AulaLessonIdRoute: typeof AulaLessonIdRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +88,43 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/aulas': {
+      id: '/aulas'
+      path: '/aulas'
+      fullPath: '/aulas'
+      preLoaderRoute: typeof AulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/comecar': {
+      id: '/comecar'
+      path: '/comecar'
+      fullPath: '/comecar'
+      preLoaderRoute: typeof ComecarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/perfil': {
+      id: '/perfil'
+      path: '/perfil'
+      fullPath: '/perfil'
+      preLoaderRoute: typeof PerfilRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/aula/$lessonId': {
+      id: '/aula/$lessonId'
+      path: '/aula/$lessonId'
+      fullPath: '/aula/$lessonId'
+      preLoaderRoute: typeof AulaLessonIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AulasRoute: AulasRoute,
+  ComecarRoute: ComecarRoute,
+  PerfilRoute: PerfilRoute,
+  AulaLessonIdRoute: AulaLessonIdRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

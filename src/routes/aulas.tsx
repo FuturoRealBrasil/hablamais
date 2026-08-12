@@ -1,0 +1,101 @@
+import { createFileRoute, Link } from "@tanstack/react-router";
+import { CheckCircle2, Clock, Lock, Sparkles } from "lucide-react";
+import { AppShell } from "@/components/app-shell";
+import { LESSONS, LEVELS, TRACK_LABEL, type Level } from "@/lib/course-data";
+import { useProgress } from "@/lib/progress-store";
+
+export const Route = createFileRoute("/aulas")({
+  head: () => ({
+    meta: [
+      { title: "Trilha de aulas de espanhol | Habla+ Espanhol" },
+      {
+        name: "description",
+        content:
+          "Aulas de espanhol do A1 ao C1: conversação, gramática, vocabulário, viagem, trabalho e provas, com exercícios guiados.",
+      },
+      { property: "og:title", content: "Trilha de aulas de espanhol | Habla+" },
+      {
+        property: "og:description",
+        content: "Do iniciante ao avançado com aulas curtas, exercícios e prática de pronúncia.",
+      },
+    ],
+  }),
+  component: AulasPage,
+});
+
+function AulasPage() {
+  const { state, hydrated } = useProgress();
+  const order: Level[] = ["A1", "A2", "B1", "B2", "C1"];
+  const userIdx = order.indexOf(state.profile.level);
+
+  return (
+    <AppShell>
+      <header className="mb-6">
+        <h1 className="text-3xl font-semibold">Trilha de aulas</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Do primeiro “hola” até o espanhol profissional. Seu nível atual é{" "}
+          <strong className="text-foreground">{state.profile.level}</strong>.
+        </p>
+      </header>
+
+      <div className="space-y-8">
+        {LEVELS.map((lvl, idx) => {
+          const locked = hydrated && idx < userIdx;
+          const lessons = LESSONS.filter((l) => l.level === lvl.id);
+          if (!lessons.length) return null;
+          return (
+            <section key={lvl.id}>
+              <div className="mb-3 flex items-center gap-3">
+                <span className="bg-sun rounded-full px-3 py-1 text-xs font-bold text-primary-foreground">
+                  {lvl.id}
+                </span>
+                <div>
+                  <h2 className="text-lg font-semibold">{lvl.name}</h2>
+                  <p className="text-xs text-muted-foreground">{lvl.description}</p>
+                </div>
+              </div>
+
+              <div className="grid gap-3 sm:grid-cols-2">
+                {lessons.map((lesson) => {
+                  const done = state.completedLessons.includes(lesson.id);
+                  return (
+                    <Link
+                      key={lesson.id}
+                      to="/aula/$lessonId"
+                      params={{ lessonId: lesson.id }}
+                      className="shadow-soft group rounded-2xl border border-border bg-card p-4 transition-transform hover:-translate-y-0.5"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <span className="rounded-full bg-secondary px-2 py-0.5 text-[11px] font-semibold text-secondary-foreground">
+                            {TRACK_LABEL[lesson.track]}
+                          </span>
+                          <h3 className="mt-2 text-base font-semibold">{lesson.title}</h3>
+                          <p className="mt-1 text-sm text-muted-foreground">{lesson.subtitle}</p>
+                        </div>
+                        {done ? (
+                          <CheckCircle2 className="h-5 w-5 shrink-0 text-success" />
+                        ) : locked ? (
+                          <Lock className="h-4 w-4 shrink-0 text-muted-foreground" />
+                        ) : (
+                          <Sparkles className="h-4 w-4 shrink-0 text-accent" />
+                        )}
+                      </div>
+                      <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
+                        <span className="flex items-center gap-1">
+                          <Clock className="h-3.5 w-3.5" /> {lesson.minutes} min
+                        </span>
+                        <span>+{lesson.xp} XP</span>
+                        <span>{lesson.vocab.length} palavras</span>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+      </div>
+    </AppShell>
+  );
+}
