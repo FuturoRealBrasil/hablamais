@@ -30,7 +30,26 @@ export type AppState = {
   pronunciation: Record<string, { best: number; attempts: number }>;
   weakSounds: string[];
   grammarDone: string[];
+  exercises: { total: number; correct: number; byType: Record<string, { total: number; correct: number }> };
+  mistakes: { id: string; type: string; skill: string; question: string; given: string; correct: string; date: string }[];
+  grammarScores: Record<string, number>;
+  claimed: string[];
+  weekStart: string;
+  weeklyXp: number;
+  weeklyMinutes: number;
+  dailyXp: number;
+  dailyExercises: number;
+  dailyReviews: number;
+  dailyConversations: number;
+  reviewSessions: number;
 };
+
+export function weekStartOf(date = new Date()) {
+  const d = new Date(date);
+  const day = (d.getDay() + 6) % 7; // segunda = 0
+  d.setDate(d.getDate() - day);
+  return d.toISOString().slice(0, 10);
+}
 
 const STORAGE_KEY = "hablamas-state-v1";
 
@@ -60,6 +79,18 @@ export const defaultState: AppState = {
   pronunciation: {},
   weakSounds: [],
   grammarDone: [],
+  exercises: { total: 0, correct: 0, byType: {} },
+  mistakes: [],
+  grammarScores: {},
+  claimed: [],
+  weekStart: weekStartOf(),
+  weeklyXp: 0,
+  weeklyMinutes: 0,
+  dailyXp: 0,
+  dailyExercises: 0,
+  dailyReviews: 0,
+  dailyConversations: 0,
+  reviewSessions: 0,
 };
 
 type Ctx = {
@@ -73,6 +104,16 @@ type Ctx = {
     minutes: number;
     accuracy: number;
     words: string[];
+  }) => void;
+  addXp: (xp: number, opts?: { minutes?: number; kind?: "exercicio" | "revisao" | "conversa" }) => void;
+  recordExercise: (entry: {
+    id: string;
+    type: string;
+    skill: string;
+    question: string;
+    given: string;
+    correct: string;
+    isCorrect: boolean;
   }) => void;
   reset: () => void;
 };
@@ -91,6 +132,16 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         if (parsed.todayDate !== today()) {
           parsed.todayDate = today();
           parsed.minutesToday = 0;
+          parsed.dailyXp = 0;
+          parsed.dailyExercises = 0;
+          parsed.dailyReviews = 0;
+          parsed.dailyConversations = 0;
+          parsed.claimed = (parsed.claimed ?? []).filter((c) => !c.startsWith("d:"));
+        }
+        if (parsed.weekStart !== weekStartOf()) {
+          parsed.weekStart = weekStartOf();
+          parsed.weeklyXp = 0;
+          parsed.weeklyMinutes = 0;
         }
         setRaw(parsed);
       }
@@ -139,6 +190,64 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     [setState],
   );
 
+  const addXp: Ctx["addXp"] = useCallback(
+    (xp, opts = {}) => {
+      const minutes = opts.minutes ?? 0;
+      setState((s) => {
+        const day = today();
+        const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+        let streak = s.streak;
+        if (s.lastStudyDate !== day) streak = s.lastStudyDate === yesterday ? s.streak + 1 : 1;
+        const sameDay = s.todayDate === day;
+        const sameWeek = s.weekStart === weekStartOf();
+        return {
+          ...s,
+          xp: s.xp + xp,
+          streak,
+          lastStudyDate: day,
+          todayDate: day,
+          minutesToday: (sameDay ? s.minutesToday : 0) + minutes,
+          dailyXp: (sameDay ? s.dailyXp : 0) + xp,
+          dailyReviews: (sameDay ? s.dailyReviews : 0) + (opts.kind === "revisao" ? 1 : 0),
+          dailyConversations: (sameDay ? s.dailyConversations : 0) + (opts.kind === "conversa" ? 1 : 0),
+          reviewSessions: s.reviewSessions + (opts.kind === "revisao" ? 1 : 0),
+          weekStart: weekStartOf(),
+          weeklyXp: (sameWeek ? s.weeklyXp : 0) + xp,
+          weeklyMinutes: (sameWeek ? s.weeklyMinutes : 0) + minutes,
+        };
+      });
+    },
+    [setState],
+  );
+
+  const recordExercise: Ctx["recordExercise"] = useCallback(
+    (entry) => {
+      setState((s) => {
+        const day = today();
+        const prev = s.exercises.byType[entry.type] ?? { total: 0, correct: 0 };
+        return {
+          ...s,
+          dailyExercises: (s.todayDate === day ? s.dailyExercises : 0) + 1,
+          exercises: {
+            total: s.exercises.total + 1,
+            correct: s.exercises.correct + (entry.isCorrect ? 1 : 0),
+            byType: {
+              ...s.exercises.byType,
+              [entry.type]: { total: prev.total + 1, correct: prev.correct + (entry.isCorrect ? 1 : 0) },
+            },
+          },
+          mistakes: entry.isCorrect
+            ? s.mistakes.filter((m) => m.id !== entry.id)
+            : [
+                { ...entry, date: day },
+                ...s.mistakes.filter((m) => m.id !== entry.id),
+              ].slice(0, 40),
+        };
+      });
+    },
+    [setState],
+  );
+
   const reset = useCallback(() => {
     try {
       localStorage.removeItem(STORAGE_KEY);
@@ -149,8 +258,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ state, hydrated, setState, completeLesson, reset }),
-    [state, hydrated, setState, completeLesson, reset],
+    () => ({ state, hydrated, setState, completeLesson, addXp, recordExercise, reset }),
+    [state, hydrated, setState, completeLesson, addXp, recordExercise, reset],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
