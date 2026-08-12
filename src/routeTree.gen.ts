@@ -16,6 +16,7 @@ import { Route as ConversarRouteImport } from './routes/conversar'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as AulaLessonIdRouteImport } from './routes/aula.$lessonId'
+import { Route as ApiPublicTranscribeRouteImport } from './routes/api/public/transcribe'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -52,6 +53,11 @@ const AulaLessonIdRoute = AulaLessonIdRouteImport.update({
   path: '/aula/$lessonId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicTranscribeRoute = ApiPublicTranscribeRouteImport.update({
+  id: '/api/public/transcribe',
+  path: '/api/public/transcribe',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -61,6 +67,7 @@ export interface FileRoutesByFullPath {
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
+  '/api/public/transcribe': typeof ApiPublicTranscribeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -70,6 +77,7 @@ export interface FileRoutesByTo {
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
+  '/api/public/transcribe': typeof ApiPublicTranscribeRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -80,6 +88,7 @@ export interface FileRoutesById {
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
+  '/api/public/transcribe': typeof ApiPublicTranscribeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -91,6 +100,7 @@ export interface FileRouteTypes {
     | '/nivelamento'
     | '/perfil'
     | '/aula/$lessonId'
+    | '/api/public/transcribe'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -100,6 +110,7 @@ export interface FileRouteTypes {
     | '/nivelamento'
     | '/perfil'
     | '/aula/$lessonId'
+    | '/api/public/transcribe'
   id:
     | '__root__'
     | '/'
@@ -109,6 +120,7 @@ export interface FileRouteTypes {
     | '/nivelamento'
     | '/perfil'
     | '/aula/$lessonId'
+    | '/api/public/transcribe'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +131,7 @@ export interface RootRouteChildren {
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
   AulaLessonIdRoute: typeof AulaLessonIdRoute
+  ApiPublicTranscribeRoute: typeof ApiPublicTranscribeRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -172,6 +185,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AulaLessonIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/transcribe': {
+      id: '/api/public/transcribe'
+      path: '/api/public/transcribe'
+      fullPath: '/api/public/transcribe'
+      preLoaderRoute: typeof ApiPublicTranscribeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -183,6 +203,7 @@ const rootRouteChildren: RootRouteChildren = {
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
   AulaLessonIdRoute: AulaLessonIdRoute,
+  ApiPublicTranscribeRoute: ApiPublicTranscribeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
