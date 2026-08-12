@@ -296,7 +296,9 @@ export function shuffle<T>(list: T[]) {
   const copy = [...list];
   for (let i = copy.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
-    [copy[i], copy[j]] = [copy[j], copy[i]];
+    const tmp = copy[i]!;
+    copy[i] = copy[j]!;
+    copy[j] = tmp;
   }
   return copy;
 }
@@ -306,7 +308,7 @@ function clean(value: string) {
 }
 
 export function correctAnswerOf(item: ExItem) {
-  if (item.options && typeof item.answerIndex === "number") return item.options[item.answerIndex];
+  if (item.options && typeof item.answerIndex === "number") return item.options[item.answerIndex] ?? "";
   return item.answerText ?? "";
 }
 
@@ -314,7 +316,7 @@ export function correctAnswerOf(item: ExItem) {
 export function checkAnswer(item: ExItem, given: string): number {
   if (item.type === "ai") return 1;
   if (item.options && typeof item.answerIndex === "number") {
-    return clean(given) === clean(item.options[item.answerIndex]) ? 1 : 0;
+    return clean(given) === clean(item.options[item.answerIndex] ?? "") ? 1 : 0;
   }
   const target = clean(item.answerText ?? "");
   const value = clean(given);
