@@ -1,13 +1,15 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { ArrowLeft, BookOpen, Check, Mic, Volume2, X } from "lucide-react";
+import { ArrowLeft, BookOpen, Check, MessagesSquare, Mic, RotateCcw, Trophy, Volume2, X } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
+import { AiChat } from "@/components/ai-chat";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { LESSONS, TRACK_LABEL } from "@/lib/course-data";
 import { useProgress } from "@/lib/progress-store";
 import { normalize, speakSpanish } from "@/lib/speech";
+
 
 export const Route = createFileRoute("/aula/$lessonId")({
   head: () => ({
