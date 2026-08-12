@@ -53,7 +53,6 @@ function LessonPage() {
   const questions = phase === "teste" ? [...lesson.exercises].reverse() : lesson.exercises;
   const exercise = questions[index]!;
   const variant = state.profile.variant;
-  const isQuiz = phase === "practice" || phase === "teste";
 
   function resetQuiz() {
     setIndex(0);
