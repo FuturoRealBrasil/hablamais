@@ -94,8 +94,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Habla+ — Seu Professor de Espanhol com IA" },
       { name: "twitter:description", content: "Aprenda espanhol do zero ao avançado: aulas guiadas, conversação, pronúncia, vocabulário e um plano de estudos personalizado." },
-      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ef5795a5dad63f4fc52c917a0acdaedd/id-preview-54169684--d333bd80-b7a4-4c61-904a-d886acec8dec.lovable.app-1786571976919.png" },
-      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ef5795a5dad63f4fc52c917a0acdaedd/id-preview-54169684--d333bd80-b7a4-4c61-904a-d886acec8dec.lovable.app-1786571976919.png" },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6cb3006c6f864784403e58670fa9c877/id-preview-493ed1a5--d333bd80-b7a4-4c61-904a-d886acec8dec.lovable.app-1786575346263.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/6cb3006c6f864784403e58670fa9c877/id-preview-493ed1a5--d333bd80-b7a4-4c61-904a-d886acec8dec.lovable.app-1786575346263.png" },
     ],
     links: [
       {
@@ -108,7 +108,6 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: "https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap",
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
 
