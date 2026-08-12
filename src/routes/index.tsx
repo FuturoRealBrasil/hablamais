@@ -11,16 +11,16 @@ import { useProgress, usePlan } from "@/lib/progress-store";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Habla+ Espanhol — Seu Professor de Espanhol com IA" },
+      { title: "Habla+ — Seu Professor de Espanhol com IA" },
       {
         name: "description",
         content:
           "Aprenda espanhol do zero ao avançado: aulas guiadas, conversação, pronúncia, vocabulário e um plano de estudos personalizado.",
       },
-      { property: "og:title", content: "Habla+ Espanhol — Seu Professor de Espanhol com IA" },
+      { property: "og:title", content: "Habla+ — Seu Professor de Espanhol com IA" },
       {
         property: "og:description",
-        content: "Aulas, exercícios e acompanhamento de progresso para aprender espanhol todos os dias.",
+        content: "Aprenda espanhol do zero ao avançado: aulas guiadas, conversação, pronúncia, vocabulário e um plano de estudos personalizado.",
       },
     ],
   }),

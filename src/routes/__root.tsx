@@ -79,19 +79,23 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Habla+ Espanhol — Seu Professor de Espanhol com IA" },
+      { title: "Habla+ — Seu Professor de Espanhol com IA" },
       {
         name: "description",
-        content: "Aprenda espanhol do iniciante ao avançado com aulas guiadas, exercícios e plano personalizado.",
+        content: "Aprenda espanhol do zero ao avançado: aulas guiadas, conversação, pronúncia, vocabulário e um plano de estudos personalizado.",
       },
       { name: "author", content: "Habla+ Espanhol" },
-      { property: "og:title", content: "Habla+ Espanhol — Seu Professor de Espanhol com IA" },
+      { property: "og:title", content: "Habla+ — Seu Professor de Espanhol com IA" },
       {
         property: "og:description",
-        content: "Aprenda espanhol do iniciante ao avançado com aulas guiadas, exercícios e plano personalizado.",
+        content: "Aprenda espanhol do zero ao avançado: aulas guiadas, conversação, pronúncia, vocabulário e um plano de estudos personalizado.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "Habla+ — Seu Professor de Espanhol com IA" },
+      { name: "twitter:description", content: "Aprenda espanhol do zero ao avançado: aulas guiadas, conversação, pronúncia, vocabulário e um plano de estudos personalizado." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ef5795a5dad63f4fc52c917a0acdaedd/id-preview-54169684--d333bd80-b7a4-4c61-904a-d886acec8dec.lovable.app-1786571976919.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/ef5795a5dad63f4fc52c917a0acdaedd/id-preview-54169684--d333bd80-b7a4-4c61-904a-d886acec8dec.lovable.app-1786571976919.png" },
     ],
     links: [
       {
