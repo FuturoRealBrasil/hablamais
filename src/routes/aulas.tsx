@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Clock, Lock, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { LESSONS, LEVELS, TRACK_LABEL, type Level } from "@/lib/course-data";
+import { CURRICULUM } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress-store";
 
 export const Route = createFileRoute("/aulas")({
