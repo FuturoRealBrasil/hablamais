@@ -53,7 +53,6 @@ function LessonPage() {
   const questions = phase === "teste" ? [...lesson.exercises].reverse() : lesson.exercises;
   const exercise = questions[index]!;
   const variant = state.profile.variant;
-  const isQuiz = phase === "practice" || phase === "teste";
 
   function resetQuiz() {
     setIndex(0);
@@ -358,7 +357,14 @@ function LessonPage() {
             }
             onClick={handleCheck}
           >
-            {checked ? (index + 1 >= lesson.exercises.length ? "Concluir aula" : "Próximo") : "Verificar"}
+            {checked
+              ? index + 1 >= questions.length
+                ? phase === "practice"
+                  ? "Ir para a conversação"
+                  : "Concluir aula"
+                : "Próximo"
+              : "Verificar"}
+
           </Button>
         </div>
       )}
