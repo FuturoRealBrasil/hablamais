@@ -25,6 +25,10 @@ export type AppState = {
   completedLessons: string[];
   learnedWords: string[];
   history: { lessonId: string; title: string; accuracy: number; date: string }[];
+  srs: SrsMap;
+  pronunciation: Record<string, { best: number; attempts: number }>;
+  weakSounds: string[];
+  grammarDone: string[];
 };
 
 const STORAGE_KEY = "hablamas-state-v1";
