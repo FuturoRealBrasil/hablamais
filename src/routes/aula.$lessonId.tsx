@@ -32,7 +32,7 @@ function LessonPage() {
   const { state, completeLesson } = useProgress();
   const lesson = useMemo(() => LESSONS.find((l) => l.id === lessonId), [lessonId]);
 
-  const [phase, setPhase] = useState<"study" | "practice" | "done">("study");
+  const [phase, setPhase] = useState<"study" | "practice" | "conversa" | "revisao" | "teste" | "done">("study");
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<number | null>(null);
   const [typed, setTyped] = useState("");
@@ -50,8 +50,18 @@ function LessonPage() {
     );
   }
 
-  const exercise = lesson.exercises[index]!;
+  const questions = phase === "teste" ? [...lesson.exercises].reverse() : lesson.exercises;
+  const exercise = questions[index]!;
   const variant = state.profile.variant;
+  const isQuiz = phase === "practice" || phase === "teste";
+
+  function resetQuiz() {
+    setIndex(0);
+    setSelected(null);
+    setTyped("");
+    setChecked(false);
+    setCorrectCount(0);
+  }
 
   function isCorrect() {
     if (!exercise) return false;
@@ -66,8 +76,13 @@ function LessonPage() {
   function handleCheck() {
     if (checked) {
       const nextIndex = index + 1;
-      if (nextIndex >= lesson!.exercises.length) {
-        const accuracy = Math.round((correctCount / lesson!.exercises.length) * 100);
+      if (nextIndex >= questions.length) {
+        if (phase === "practice") {
+          resetQuiz();
+          setPhase("conversa");
+          return;
+        }
+        const accuracy = Math.round((correctCount / questions.length) * 100);
         completeLesson({
           lessonId: lesson!.id,
           title: lesson!.title,
@@ -91,6 +106,7 @@ function LessonPage() {
 
   if (phase === "done") {
     const accuracy = Math.round((correctCount / lesson.exercises.length) * 100);
+
     return (
       <AppShell>
         <div className="shadow-soft mx-auto max-w-md rounded-3xl border border-border bg-card p-8 text-center">
