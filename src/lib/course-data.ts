@@ -7,7 +7,7 @@ export type Track =
   | "trabalho"
   | "provas";
 
-export type Level = "A1" | "A2" | "B1" | "B2" | "C1";
+export type Level = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
 export type Exercise =
   | {
@@ -72,8 +72,9 @@ export const LEVELS: { id: Level; name: string; description: string }[] = [
   { id: "A1", name: "Iniciante", description: "Primeiras palavras e frases do dia a dia" },
   { id: "A2", name: "Básico", description: "Conversas simples, passado e rotina" },
   { id: "B1", name: "Intermediário", description: "Opiniões, planos e situações reais" },
-  { id: "B2", name: "Avançado", description: "Fluidez, subjuntivo e nuances" },
-  { id: "C1", name: "Proficiente", description: "Espanhol profissional e acadêmico" },
+  { id: "B2", name: "Intermediário avançado", description: "Debate, trabalho e textos complexos" },
+  { id: "C1", name: "Avançado", description: "Espanhol profissional e acadêmico" },
+  { id: "C2", name: "Domínio", description: "Ironia, humor, gírias e nuances da língua" },
 ];
 
 export const LESSONS: Lesson[] = [
@@ -464,6 +465,55 @@ export const LESSONS: Lesson[] = [
       },
     ],
   },
+  {
+    id: "c2-ironia",
+    title: "Ironia, humor e gírias",
+    subtitle: "Entender o que não está dito: nuances de nativo",
+    level: "C2",
+    track: "conversacao",
+    minutes: 20,
+    xp: 95,
+    grammar: {
+      title: "Marcas de ironia em espanhol",
+      body: "Ironia costuma vir de exageros (“¡qué puntual!”), diminutivos irônicos e contraste com o contexto. O tom e o contexto valem mais que a literalidade.",
+      examples: [
+        { es: "¡Qué puntual eres! (llegó tarde)", pt: "Que pontual você é! (chegou atrasado)" },
+        { es: "Menudo trabajito nos han dejado.", pt: "Belo trabalhinho que nos deixaram." },
+      ],
+    },
+    vocab: [
+      { es: "menudo/a", pt: "e que … (irônico)" },
+      { es: "flipar", pt: "surtar / se impressionar (Espanha)" },
+      { es: "chévere", pt: "legal (Caribe/Andes)" },
+      { es: "estar en las nubes", pt: "estar no mundo da lua" },
+      { es: "tomar el pelo", pt: "tirar sarro" },
+    ],
+    exercises: [
+      {
+        kind: "choice",
+        prompt: "Interprete o tom",
+        question: "“Sí, claro, y yo soy el rey de España.” expressa:",
+        options: ["Concordância", "Incredulidade irônica", "Admiração", "Formalidade"],
+        answer: 1,
+        explanation: "Exagero absurdo = descrença irônica.",
+      },
+      {
+        kind: "translate",
+        prompt: "Traduza para o espanhol",
+        question: "Ele está tirando sarro de você.",
+        answer: "Te está tomando el pelo",
+        accepted: ["te esta tomando el pelo", "él te está tomando el pelo"],
+        explanation: "“Tomar el pelo” = zoar alguém.",
+      },
+      {
+        kind: "speak",
+        prompt: "Pronuncie com entonação irônica",
+        question: "¡Menudo día llevamos hoy!",
+        audioText: "¡Menudo día llevamos hoy!",
+        explanation: "A entonação ascendente reforça o sentido irônico.",
+      },
+    ],
+  },
 ];
 
 export const PLACEMENT_QUESTIONS: {
@@ -548,7 +598,7 @@ export function levelFromScore(score: number): Level {
 }
 
 export function lessonsForLevel(level: Level) {
-  const order: Level[] = ["A1", "A2", "B1", "B2", "C1"];
+  const order: Level[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
   const start = order.indexOf(level);
   return LESSONS.filter((l) => order.indexOf(l.level) >= start);
 }

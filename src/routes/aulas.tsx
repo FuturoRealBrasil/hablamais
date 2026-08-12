@@ -2,6 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, Clock, Lock, Sparkles } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { LESSONS, LEVELS, TRACK_LABEL, type Level } from "@/lib/course-data";
+import { CURRICULUM } from "@/lib/curriculum";
 import { useProgress } from "@/lib/progress-store";
 
 export const Route = createFileRoute("/aulas")({
@@ -25,7 +26,7 @@ export const Route = createFileRoute("/aulas")({
 
 function AulasPage() {
   const { state, hydrated } = useProgress();
-  const order: Level[] = ["A1", "A2", "B1", "B2", "C1"];
+  const order: Level[] = ["A1", "A2", "B1", "B2", "C1", "C2"];
   const userIdx = order.indexOf(state.profile.level);
 
   return (
@@ -34,15 +35,18 @@ function AulasPage() {
         <h1 className="text-3xl font-semibold">Trilha de aulas</h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Do primeiro “hola” até o espanhol profissional. Seu nível atual é{" "}
-          <strong className="text-foreground">{state.profile.level}</strong>.
+          <strong className="text-foreground">{state.profile.level}</strong>.{" "}
+          <Link to="/nivelamento" className="text-primary underline-offset-2 hover:underline">
+            Refazer teste de nivelamento
+          </Link>
         </p>
       </header>
 
-      <div className="space-y-8">
+      <div className="space-y-10">
         {LEVELS.map((lvl, idx) => {
           const locked = hydrated && idx < userIdx;
           const lessons = LESSONS.filter((l) => l.level === lvl.id);
-          if (!lessons.length) return null;
+          const curriculum = CURRICULUM[lvl.id];
           return (
             <section key={lvl.id}>
               <div className="mb-3 flex items-center gap-3">
@@ -52,6 +56,24 @@ function AulasPage() {
                 <div>
                   <h2 className="text-lg font-semibold">{lvl.name}</h2>
                   <p className="text-xs text-muted-foreground">{lvl.description}</p>
+                </div>
+              </div>
+
+              <div className="shadow-soft mb-4 rounded-2xl border border-border bg-card p-4">
+                <p className="text-sm text-muted-foreground">{curriculum.headline}</p>
+                <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                  {curriculum.modules.map((m) => (
+                    <div key={m.title} className="rounded-xl bg-secondary/50 p-3">
+                      <p className="text-sm font-semibold">{m.title}</p>
+                      <ul className="mt-1 flex flex-wrap gap-1.5">
+                        {m.topics.map((t) => (
+                          <li key={t} className="rounded-full bg-background px-2 py-0.5 text-[11px] text-muted-foreground">
+                            {t}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
                 </div>
               </div>
 
