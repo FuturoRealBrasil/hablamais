@@ -1,5 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
 import type { Level, Track } from "./course-data";
+import type { SrsMap } from "./vocabulary";
 import { LESSONS, lessonsForLevel } from "./course-data";
 
 export type Profile = {
@@ -25,6 +26,10 @@ export type AppState = {
   completedLessons: string[];
   learnedWords: string[];
   history: { lessonId: string; title: string; accuracy: number; date: string }[];
+  srs: SrsMap;
+  pronunciation: Record<string, { best: number; attempts: number }>;
+  weakSounds: string[];
+  grammarDone: string[];
 };
 
 const STORAGE_KEY = "hablamas-state-v1";
@@ -51,6 +56,10 @@ export const defaultState: AppState = {
   completedLessons: [],
   learnedWords: [],
   history: [],
+  srs: {},
+  pronunciation: {},
+  weakSounds: [],
+  grammarDone: [],
 };
 
 type Ctx = {
