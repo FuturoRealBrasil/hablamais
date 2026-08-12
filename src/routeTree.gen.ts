@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AulasRouteImport } from './routes/aulas'
 import { Route as ComecarRouteImport } from './routes/comecar'
 import { Route as ConversarRouteImport } from './routes/conversar'
+import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
@@ -38,6 +39,11 @@ const ComecarRoute = ComecarRouteImport.update({
 const ConversarRoute = ConversarRouteImport.update({
   id: '/conversar',
   path: '/conversar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const GramaticaRoute = GramaticaRouteImport.update({
+  id: '/gramatica',
+  path: '/gramatica',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NivelamentoRoute = NivelamentoRouteImport.update({
@@ -76,6 +82,7 @@ export interface FileRoutesByFullPath {
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
   '/conversar': typeof ConversarRoute
+  '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/pronuncia': typeof PronunciaRoute
@@ -88,6 +95,7 @@ export interface FileRoutesByTo {
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
   '/conversar': typeof ConversarRoute
+  '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/pronuncia': typeof PronunciaRoute
@@ -101,6 +109,7 @@ export interface FileRoutesById {
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
   '/conversar': typeof ConversarRoute
+  '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/pronuncia': typeof PronunciaRoute
@@ -115,6 +124,7 @@ export interface FileRouteTypes {
     | '/aulas'
     | '/comecar'
     | '/conversar'
+    | '/gramatica'
     | '/nivelamento'
     | '/perfil'
     | '/pronuncia'
@@ -127,6 +137,7 @@ export interface FileRouteTypes {
     | '/aulas'
     | '/comecar'
     | '/conversar'
+    | '/gramatica'
     | '/nivelamento'
     | '/perfil'
     | '/pronuncia'
@@ -139,6 +150,7 @@ export interface FileRouteTypes {
     | '/aulas'
     | '/comecar'
     | '/conversar'
+    | '/gramatica'
     | '/nivelamento'
     | '/perfil'
     | '/pronuncia'
@@ -152,6 +164,7 @@ export interface RootRouteChildren {
   AulasRoute: typeof AulasRoute
   ComecarRoute: typeof ComecarRoute
   ConversarRoute: typeof ConversarRoute
+  GramaticaRoute: typeof GramaticaRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
   PronunciaRoute: typeof PronunciaRoute
@@ -188,6 +201,13 @@ declare module '@tanstack/react-router' {
       path: '/conversar'
       fullPath: '/conversar'
       preLoaderRoute: typeof ConversarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/gramatica': {
+      id: '/gramatica'
+      path: '/gramatica'
+      fullPath: '/gramatica'
+      preLoaderRoute: typeof GramaticaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nivelamento': {
@@ -240,6 +260,7 @@ const rootRouteChildren: RootRouteChildren = {
   AulasRoute: AulasRoute,
   ComecarRoute: ComecarRoute,
   ConversarRoute: ConversarRoute,
+  GramaticaRoute: GramaticaRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
   PronunciaRoute: PronunciaRoute,
