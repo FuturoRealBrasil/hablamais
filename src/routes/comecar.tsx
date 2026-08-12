@@ -293,6 +293,13 @@ function ComecarPage() {
               <Button className="w-full" onClick={finish}>
                 Começar a estudar
               </Button>
+              <p className="text-xs text-muted-foreground">
+                Quer um diagnóstico completo (A1 a C2) com pontos fortes e fracos?{" "}
+                <Link to="/nivelamento" className="text-primary underline-offset-2 hover:underline">
+                  Faça o teste de nivelamento completo
+                </Link>
+                .
+              </p>
             </div>
           )}
         </div>
