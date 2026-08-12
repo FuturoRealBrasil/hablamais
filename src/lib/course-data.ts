@@ -7,7 +7,7 @@ export type Track =
   | "trabalho"
   | "provas";
 
-export type Level = "A1" | "A2" | "B1" | "B2" | "C1";
+export type Level = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 
 export type Exercise =
   | {
@@ -72,8 +72,9 @@ export const LEVELS: { id: Level; name: string; description: string }[] = [
   { id: "A1", name: "Iniciante", description: "Primeiras palavras e frases do dia a dia" },
   { id: "A2", name: "Básico", description: "Conversas simples, passado e rotina" },
   { id: "B1", name: "Intermediário", description: "Opiniões, planos e situações reais" },
-  { id: "B2", name: "Avançado", description: "Fluidez, subjuntivo e nuances" },
-  { id: "C1", name: "Proficiente", description: "Espanhol profissional e acadêmico" },
+  { id: "B2", name: "Intermediário avançado", description: "Debate, trabalho e textos complexos" },
+  { id: "C1", name: "Avançado", description: "Espanhol profissional e acadêmico" },
+  { id: "C2", name: "Domínio", description: "Ironia, humor, gírias e nuances da língua" },
 ];
 
 export const LESSONS: Lesson[] = [
