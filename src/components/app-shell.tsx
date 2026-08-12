@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { BookOpen, GraduationCap, Home, User } from "lucide-react";
+import { BookOpen, GraduationCap, Home, MessagesSquare, User } from "lucide-react";
 import type { ReactNode } from "react";
 
 export function Logo({ compact = false }: { compact?: boolean }) {
@@ -21,9 +21,11 @@ export function Logo({ compact = false }: { compact?: boolean }) {
 const NAV = [
   { to: "/", label: "Início", icon: Home },
   { to: "/aulas", label: "Aulas", icon: BookOpen },
+  { to: "/conversar", label: "Conversar", icon: MessagesSquare },
   { to: "/nivelamento", label: "Nível", icon: GraduationCap },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
+
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
