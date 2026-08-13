@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AulasRouteImport } from './routes/aulas'
 import { Route as ComecarRouteImport } from './routes/comecar'
+import { Route as ConquistasRouteImport } from './routes/conquistas'
 import { Route as ConversarRouteImport } from './routes/conversar'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
@@ -36,6 +37,11 @@ const AulasRoute = AulasRouteImport.update({
 const ComecarRoute = ComecarRouteImport.update({
   id: '/comecar',
   path: '/comecar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConquistasRoute = ConquistasRouteImport.update({
+  id: '/conquistas',
+  path: '/conquistas',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConversarRoute = ConversarRouteImport.update({
@@ -93,6 +99,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
+  '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
@@ -108,6 +115,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
+  '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
@@ -124,6 +132,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
+  '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
@@ -141,6 +150,7 @@ export interface FileRouteTypes {
     | '/'
     | '/aulas'
     | '/comecar'
+    | '/conquistas'
     | '/conversar'
     | '/exercicios'
     | '/gramatica'
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/'
     | '/aulas'
     | '/comecar'
+    | '/conquistas'
     | '/conversar'
     | '/exercicios'
     | '/gramatica'
@@ -171,6 +182,7 @@ export interface FileRouteTypes {
     | '/'
     | '/aulas'
     | '/comecar'
+    | '/conquistas'
     | '/conversar'
     | '/exercicios'
     | '/gramatica'
@@ -187,6 +199,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AulasRoute: typeof AulasRoute
   ComecarRoute: typeof ComecarRoute
+  ConquistasRoute: typeof ConquistasRoute
   ConversarRoute: typeof ConversarRoute
   ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
@@ -220,6 +233,13 @@ declare module '@tanstack/react-router' {
       path: '/comecar'
       fullPath: '/comecar'
       preLoaderRoute: typeof ComecarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/conquistas': {
+      id: '/conquistas'
+      path: '/conquistas'
+      fullPath: '/conquistas'
+      preLoaderRoute: typeof ConquistasRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/conversar': {
@@ -299,6 +319,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AulasRoute: AulasRoute,
   ComecarRoute: ComecarRoute,
+  ConquistasRoute: ConquistasRoute,
   ConversarRoute: ConversarRoute,
   ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
