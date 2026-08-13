@@ -13,6 +13,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as AulasRouteImport } from './routes/aulas'
 import { Route as ComecarRouteImport } from './routes/comecar'
 import { Route as ConversarRouteImport } from './routes/conversar'
+import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
@@ -39,6 +40,11 @@ const ComecarRoute = ComecarRouteImport.update({
 const ConversarRoute = ConversarRouteImport.update({
   id: '/conversar',
   path: '/conversar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExerciciosRoute = ExerciciosRouteImport.update({
+  id: '/exercicios',
+  path: '/exercicios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GramaticaRoute = GramaticaRouteImport.update({
@@ -82,6 +88,7 @@ export interface FileRoutesByFullPath {
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
   '/conversar': typeof ConversarRoute
+  '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
@@ -95,6 +102,7 @@ export interface FileRoutesByTo {
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
   '/conversar': typeof ConversarRoute
+  '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
@@ -109,6 +117,7 @@ export interface FileRoutesById {
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
   '/conversar': typeof ConversarRoute
+  '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
@@ -124,6 +133,7 @@ export interface FileRouteTypes {
     | '/aulas'
     | '/comecar'
     | '/conversar'
+    | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
@@ -137,6 +147,7 @@ export interface FileRouteTypes {
     | '/aulas'
     | '/comecar'
     | '/conversar'
+    | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
@@ -150,6 +161,7 @@ export interface FileRouteTypes {
     | '/aulas'
     | '/comecar'
     | '/conversar'
+    | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
@@ -164,6 +176,7 @@ export interface RootRouteChildren {
   AulasRoute: typeof AulasRoute
   ComecarRoute: typeof ComecarRoute
   ConversarRoute: typeof ConversarRoute
+  ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
@@ -201,6 +214,13 @@ declare module '@tanstack/react-router' {
       path: '/conversar'
       fullPath: '/conversar'
       preLoaderRoute: typeof ConversarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercicios': {
+      id: '/exercicios'
+      path: '/exercicios'
+      fullPath: '/exercicios'
+      preLoaderRoute: typeof ExerciciosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gramatica': {
@@ -260,6 +280,7 @@ const rootRouteChildren: RootRouteChildren = {
   AulasRoute: AulasRoute,
   ComecarRoute: ComecarRoute,
   ConversarRoute: ConversarRoute,
+  ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
