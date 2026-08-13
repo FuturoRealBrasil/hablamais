@@ -144,7 +144,7 @@ export function buildReview(state: AppState) {
     items.push(...extras.slice(0, 6 - items.length));
   }
 
-  const drills = PHONEME_DRILLS.filter((d) => weakSounds.includes(d.sound)).slice(0, 3);
+  const drills = PHONEME_DRILLS.filter((d) => weakSounds.includes(d.symbol) || weakSounds.includes(d.id)).slice(0, 3);
 
   return { diagnostics, items: items.slice(0, 10), drills, weakLessons };
 }
