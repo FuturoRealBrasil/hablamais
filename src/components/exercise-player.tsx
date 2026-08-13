@@ -51,7 +51,7 @@ export function ExercisePlayer({
       correct: correctAnswerOf(item),
       isCorrect: score >= 1,
     });
-    if (xp > 0) addXp(xp, { minutes: 1, kind: item.type === "ai" ? "conversa" : undefined });
+    if (xp > 0) addXp(xp, item.type === "ai" ? { minutes: 1, kind: "conversa" } : { minutes: 1 });
   }
 
   function next() {
