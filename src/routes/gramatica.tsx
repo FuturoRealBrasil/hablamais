@@ -100,13 +100,17 @@ function GramaticaPage() {
   const done = state.grammarDone.includes(topic.id);
 
   function finishTest(correct: number) {
+    const score = topic.test.length ? Math.round((correct / topic.test.length) * 100) : 0;
     setState((s) => ({
       ...s,
       xp: s.xp + correct * 10,
+      weeklyXp: s.weeklyXp + correct * 10,
+      grammarScores: { ...s.grammarScores, [topic.id]: score },
       grammarDone: s.grammarDone.includes(topic.id) ? s.grammarDone : [...s.grammarDone, topic.id],
     }));
     setStep("revisao");
   }
+
 
   return (
     <AppShell>
