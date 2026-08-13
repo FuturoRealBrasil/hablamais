@@ -12,11 +12,14 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AulasRouteImport } from './routes/aulas'
 import { Route as ComecarRouteImport } from './routes/comecar'
+import { Route as ConquistasRouteImport } from './routes/conquistas'
 import { Route as ConversarRouteImport } from './routes/conversar'
+import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
+import { Route as RevisaoRouteImport } from './routes/revisao'
 import { Route as VocabularioRouteImport } from './routes/vocabulario'
 import { Route as AulaLessonIdRouteImport } from './routes/aula.$lessonId'
 import { Route as ApiPublicTranscribeRouteImport } from './routes/api/public/transcribe'
@@ -36,9 +39,19 @@ const ComecarRoute = ComecarRouteImport.update({
   path: '/comecar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConquistasRoute = ConquistasRouteImport.update({
+  id: '/conquistas',
+  path: '/conquistas',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ConversarRoute = ConversarRouteImport.update({
   id: '/conversar',
   path: '/conversar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExerciciosRoute = ExerciciosRouteImport.update({
+  id: '/exercicios',
+  path: '/exercicios',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GramaticaRoute = GramaticaRouteImport.update({
@@ -61,6 +74,11 @@ const PronunciaRoute = PronunciaRouteImport.update({
   path: '/pronuncia',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RevisaoRoute = RevisaoRouteImport.update({
+  id: '/revisao',
+  path: '/revisao',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const VocabularioRoute = VocabularioRouteImport.update({
   id: '/vocabulario',
   path: '/vocabulario',
@@ -81,11 +99,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
+  '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
+  '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/pronuncia': typeof PronunciaRoute
+  '/revisao': typeof RevisaoRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
   '/api/public/transcribe': typeof ApiPublicTranscribeRoute
@@ -94,11 +115,14 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
+  '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
+  '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/pronuncia': typeof PronunciaRoute
+  '/revisao': typeof RevisaoRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
   '/api/public/transcribe': typeof ApiPublicTranscribeRoute
@@ -108,11 +132,14 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
   '/comecar': typeof ComecarRoute
+  '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
+  '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/pronuncia': typeof PronunciaRoute
+  '/revisao': typeof RevisaoRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
   '/api/public/transcribe': typeof ApiPublicTranscribeRoute
@@ -123,11 +150,14 @@ export interface FileRouteTypes {
     | '/'
     | '/aulas'
     | '/comecar'
+    | '/conquistas'
     | '/conversar'
+    | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
     | '/pronuncia'
+    | '/revisao'
     | '/vocabulario'
     | '/aula/$lessonId'
     | '/api/public/transcribe'
@@ -136,11 +166,14 @@ export interface FileRouteTypes {
     | '/'
     | '/aulas'
     | '/comecar'
+    | '/conquistas'
     | '/conversar'
+    | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
     | '/pronuncia'
+    | '/revisao'
     | '/vocabulario'
     | '/aula/$lessonId'
     | '/api/public/transcribe'
@@ -149,11 +182,14 @@ export interface FileRouteTypes {
     | '/'
     | '/aulas'
     | '/comecar'
+    | '/conquistas'
     | '/conversar'
+    | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
     | '/pronuncia'
+    | '/revisao'
     | '/vocabulario'
     | '/aula/$lessonId'
     | '/api/public/transcribe'
@@ -163,11 +199,14 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AulasRoute: typeof AulasRoute
   ComecarRoute: typeof ComecarRoute
+  ConquistasRoute: typeof ConquistasRoute
   ConversarRoute: typeof ConversarRoute
+  ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
   PronunciaRoute: typeof PronunciaRoute
+  RevisaoRoute: typeof RevisaoRoute
   VocabularioRoute: typeof VocabularioRoute
   AulaLessonIdRoute: typeof AulaLessonIdRoute
   ApiPublicTranscribeRoute: typeof ApiPublicTranscribeRoute
@@ -196,11 +235,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ComecarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/conquistas': {
+      id: '/conquistas'
+      path: '/conquistas'
+      fullPath: '/conquistas'
+      preLoaderRoute: typeof ConquistasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/conversar': {
       id: '/conversar'
       path: '/conversar'
       fullPath: '/conversar'
       preLoaderRoute: typeof ConversarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exercicios': {
+      id: '/exercicios'
+      path: '/exercicios'
+      fullPath: '/exercicios'
+      preLoaderRoute: typeof ExerciciosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/gramatica': {
@@ -231,6 +284,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PronunciaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/revisao': {
+      id: '/revisao'
+      path: '/revisao'
+      fullPath: '/revisao'
+      preLoaderRoute: typeof RevisaoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/vocabulario': {
       id: '/vocabulario'
       path: '/vocabulario'
@@ -259,11 +319,14 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AulasRoute: AulasRoute,
   ComecarRoute: ComecarRoute,
+  ConquistasRoute: ConquistasRoute,
   ConversarRoute: ConversarRoute,
+  ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
   PronunciaRoute: PronunciaRoute,
+  RevisaoRoute: RevisaoRoute,
   VocabularioRoute: VocabularioRoute,
   AulaLessonIdRoute: AulaLessonIdRoute,
   ApiPublicTranscribeRoute: ApiPublicTranscribeRoute,

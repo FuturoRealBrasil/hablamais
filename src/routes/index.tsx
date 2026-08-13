@@ -108,6 +108,24 @@ function HomePage() {
         <StatCard icon={Languages} label="Vocabulário" value={`${state.learnedWords.length}`} hint="palavras aprendidas" />
       </section>
 
+      <section className="mt-5 grid gap-3 sm:grid-cols-3">
+        {[
+          { to: "/exercicios", title: "Exercícios", text: "10 formatos com correção imediata" },
+          { to: "/revisao", title: "Revisão Inteligente", text: "Sessão montada pelos seus pontos fracos" },
+          { to: "/conquistas", title: "Conquistas & Ranking", text: "Missões, medalhas e metas semanais" },
+        ].map((c) => (
+          <Link
+            key={c.to}
+            to={c.to}
+            className="shadow-soft rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
+          >
+            <p className="font-display text-base font-semibold">{c.title}</p>
+            <p className="mt-0.5 text-xs text-muted-foreground">{c.text}</p>
+          </Link>
+        ))}
+      </section>
+
+
       <section className="shadow-soft mt-5 rounded-3xl border border-border bg-card p-6">
         <h2 className="flex items-center gap-2 text-lg font-semibold">
           <Target className="h-5 w-5 text-primary" /> Meta diária
