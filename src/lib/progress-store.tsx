@@ -1,4 +1,6 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import type { Json } from "@/integrations/supabase/types";
 import type { Level, Track } from "./course-data";
 import type { SrsMap } from "./vocabulary";
 import { LESSONS, lessonsForLevel } from "./course-data";
@@ -96,6 +98,10 @@ export const defaultState: AppState = {
 type Ctx = {
   state: AppState;
   hydrated: boolean;
+  userId: string | null;
+  authEmail: string | null;
+  syncing: boolean;
+  signOut: () => Promise<void>;
   setState: (updater: (s: AppState) => AppState) => void;
   completeLesson: (args: {
     lessonId: string;
@@ -120,36 +126,127 @@ type Ctx = {
 
 const ProgressContext = createContext<Ctx | null>(null);
 
+function rollDates(parsed: AppState): AppState {
+  const next = { ...defaultState, ...parsed };
+  if (next.todayDate !== today()) {
+    next.todayDate = today();
+    next.minutesToday = 0;
+    next.dailyXp = 0;
+    next.dailyExercises = 0;
+    next.dailyReviews = 0;
+    next.dailyConversations = 0;
+    next.claimed = (next.claimed ?? []).filter((c) => !c.startsWith("d:"));
+  }
+  if (next.weekStart !== weekStartOf()) {
+    next.weekStart = weekStartOf();
+    next.weeklyXp = 0;
+    next.weeklyMinutes = 0;
+  }
+  return next;
+}
+
+/** A nuvem é a fonte de verdade quando tem mais progresso; senão mantém o local. */
+function mergeStates(local: AppState, cloud: AppState): AppState {
+  const base = cloud.xp >= local.xp ? cloud : local;
+  const other = base === cloud ? local : cloud;
+  return {
+    ...base,
+    onboarded: base.onboarded || other.onboarded,
+    xp: Math.max(local.xp, cloud.xp),
+    streak: Math.max(local.streak, cloud.streak),
+    completedLessons: Array.from(new Set([...local.completedLessons, ...cloud.completedLessons])),
+    learnedWords: Array.from(new Set([...local.learnedWords, ...cloud.learnedWords])),
+    grammarDone: Array.from(new Set([...(local.grammarDone ?? []), ...(cloud.grammarDone ?? [])])),
+    srs: { ...local.srs, ...cloud.srs },
+    profile: base.profile.name || base.profile.email ? base.profile : other.profile,
+  };
+}
+
 export function ProgressProvider({ children }: { children: ReactNode }) {
   const [state, setRaw] = useState<AppState>(defaultState);
   const [hydrated, setHydrated] = useState(false);
+  const [userId, setUserId] = useState<string | null>(null);
+  const [authEmail, setAuthEmail] = useState<string | null>(null);
+  const [syncing, setSyncing] = useState(false);
+  const stateRef = useRef(state);
+  const cloudReady = useRef(false);
+  const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
+  stateRef.current = state;
+
+  // 1) hidrata do armazenamento local
   useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        const parsed = { ...defaultState, ...(JSON.parse(stored) as AppState) };
-        if (parsed.todayDate !== today()) {
-          parsed.todayDate = today();
-          parsed.minutesToday = 0;
-          parsed.dailyXp = 0;
-          parsed.dailyExercises = 0;
-          parsed.dailyReviews = 0;
-          parsed.dailyConversations = 0;
-          parsed.claimed = (parsed.claimed ?? []).filter((c) => !c.startsWith("d:"));
-        }
-        if (parsed.weekStart !== weekStartOf()) {
-          parsed.weekStart = weekStartOf();
-          parsed.weeklyXp = 0;
-          parsed.weeklyMinutes = 0;
-        }
-        setRaw(parsed);
-      }
+      if (stored) setRaw(rollDates(JSON.parse(stored) as AppState));
     } catch {
       /* ignore corrupted storage */
     }
     setHydrated(true);
   }, []);
+
+  // 2) escuta a sessão e carrega o progresso da nuvem
+  useEffect(() => {
+    let active = true;
+
+    async function loadCloud(uid: string) {
+      setSyncing(true);
+      try {
+        const { data } = await supabase.from("progress").select("state").eq("user_id", uid).maybeSingle();
+        if (!active) return;
+        if (data?.state) {
+          const cloud = rollDates(data.state as unknown as AppState);
+          const merged = mergeStates(stateRef.current, cloud);
+          setRaw(merged);
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(merged));
+          } catch {
+            /* ignore */
+          }
+        }
+        cloudReady.current = true;
+      } finally {
+        if (active) setSyncing(false);
+      }
+    }
+
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+      const uid = session?.user?.id ?? null;
+      setUserId(uid);
+      setAuthEmail(session?.user?.email ?? null);
+      cloudReady.current = false;
+      if (uid) void loadCloud(uid);
+    });
+
+    void supabase.auth.getSession().then(({ data }) => {
+      const uid = data.session?.user?.id ?? null;
+      setUserId(uid);
+      setAuthEmail(data.session?.user?.email ?? null);
+      if (uid) void loadCloud(uid);
+    });
+
+    return () => {
+      active = false;
+      sub.subscription.unsubscribe();
+    };
+  }, []);
+
+  // 3) salva na nuvem com debounce
+  useEffect(() => {
+    if (!hydrated || !userId || !cloudReady.current) return;
+    if (saveTimer.current) clearTimeout(saveTimer.current);
+    saveTimer.current = setTimeout(() => {
+      void supabase
+        .from("progress")
+        .upsert(
+          { user_id: userId, state: state as unknown as Json, updated_at: new Date().toISOString() },
+          { onConflict: "user_id" },
+        );
+    }, 800);
+    return () => {
+      if (saveTimer.current) clearTimeout(saveTimer.current);
+    };
+  }, [state, hydrated, userId]);
 
   const setState = useCallback((updater: (s: AppState) => AppState) => {
     setRaw((prev) => {
@@ -162,6 +259,26 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
       return next;
     });
   }, []);
+
+  const signOut = useCallback(async () => {
+    if (userId && cloudReady.current) {
+      await supabase
+        .from("progress")
+        .upsert(
+          { user_id: userId, state: stateRef.current as unknown as Json, updated_at: new Date().toISOString() },
+          { onConflict: "user_id" },
+        );
+    }
+    await supabase.auth.signOut();
+    cloudReady.current = false;
+    try {
+      localStorage.removeItem(STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+    setRaw(defaultState);
+  }, [userId]);
+
 
   const completeLesson: Ctx["completeLesson"] = useCallback(
     ({ lessonId, title, xp, minutes, accuracy, words }) => {
@@ -258,8 +375,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const value = useMemo(
-    () => ({ state, hydrated, setState, completeLesson, addXp, recordExercise, reset }),
-    [state, hydrated, setState, completeLesson, addXp, recordExercise, reset],
+    () => ({ state, hydrated, userId, authEmail, syncing, signOut, setState, completeLesson, addXp, recordExercise, reset }),
+    [state, hydrated, userId, authEmail, syncing, signOut, setState, completeLesson, addXp, recordExercise, reset],
   );
 
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;

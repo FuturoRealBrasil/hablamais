@@ -1,0 +1,1 @@
+COMMENT ON COLUMN public.progress.updated_at IS 'Última sincronização do progresso.';

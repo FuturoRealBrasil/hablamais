@@ -1,6 +1,9 @@
-import { Link } from "@tanstack/react-router";
-import { BookOpen, Dumbbell, GraduationCap, Home, Layers, MessagesSquare, Mic, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { BookOpen, Dumbbell, GraduationCap, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { useProgress } from "@/lib/progress-store";
+
 
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
@@ -36,13 +39,45 @@ const MOBILE_KEYS = ["/", "/aulas", "/exercicios", "/revisao", "/conquistas", "/
 const MOBILE_NAV = NAV.filter((item) => MOBILE_KEYS.includes(item.to));
 
 
+export function AccountButton() {
+  const { userId, authEmail, syncing, signOut } = useProgress();
+  const navigate = useNavigate();
+
+  if (!userId) {
+    return (
+      <Button size="sm" variant="outline" className="shrink-0 gap-1" onClick={() => navigate({ to: "/entrar" })}>
+        <LogIn className="h-4 w-4" /> Entrar
+      </Button>
+    );
+  }
+
+  return (
+    <div className="flex shrink-0 items-center gap-2">
+      <span className="hidden max-w-[140px] truncate text-xs text-muted-foreground md:block">
+        {syncing ? "Sincronizando..." : authEmail}
+      </span>
+      <Button
+        size="sm"
+        variant="ghost"
+        className="gap-1"
+        onClick={async () => {
+          await signOut();
+          navigate({ to: "/entrar", replace: true });
+        }}
+      >
+        <LogOut className="h-4 w-4" /> Sair
+      </Button>
+    </div>
+  );
+}
+
 export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="bg-soft min-h-screen">
       <header className="sticky top-0 z-30 border-b border-border/70 bg-background/85 backdrop-blur">
-        <div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3">
+        <div className="mx-auto flex max-w-5xl items-center justify-between gap-2 px-4 py-3">
           <Logo />
-          <nav className="hidden max-w-[70%] items-center gap-0.5 overflow-x-auto sm:flex">
+          <nav className="hidden max-w-[55%] items-center gap-0.5 overflow-x-auto sm:flex">
             {NAV.map(({ to, label, icon: Icon }) => (
               <Link
                 key={to}
@@ -56,8 +91,10 @@ export function AppShell({ children }: { children: ReactNode }) {
               </Link>
             ))}
           </nav>
+          <AccountButton />
         </div>
       </header>
+
 
       <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-14">{children}</main>
 
