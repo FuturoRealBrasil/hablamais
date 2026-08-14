@@ -1,0 +1,1 @@
+COMMENT ON TABLE public.progress IS 'Progresso do aluno (estado do app em JSON), 1 linha por usuário.';

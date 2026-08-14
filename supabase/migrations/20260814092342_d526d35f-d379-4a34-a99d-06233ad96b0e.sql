@@ -1,0 +1,1 @@
+COMMENT ON COLUMN public.progress.state IS 'Estado completo do progresso do aluno em JSON.';
