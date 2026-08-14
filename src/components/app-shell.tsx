@@ -1,6 +1,9 @@
-import { Link } from "@tanstack/react-router";
-import { BookOpen, Dumbbell, GraduationCap, Home, Layers, MessagesSquare, Mic, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { BookOpen, Dumbbell, GraduationCap, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
 import type { ReactNode } from "react";
+import { Button } from "@/components/ui/button";
+import { useProgress } from "@/lib/progress-store";
+
 
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
