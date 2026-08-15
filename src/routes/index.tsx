@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { state, hydrated } = useProgress();
+  const { state, hydrated, userId, authEmail, addXp, setState } = useProgress();
   const { next, percent, plan } = usePlan();
   const navigate = useNavigate();
 
@@ -40,6 +40,16 @@ function HomePage() {
 
   const levelName = LEVELS.find((l) => l.id === state.profile.level)?.name ?? "";
   const goalPercent = Math.min(100, Math.round((state.minutesToday / state.profile.minutesPerDay) * 100));
+  const daily = challengeStatus(state);
+
+  function claimDaily() {
+    const id = challengeClaimId();
+    if (state.claimed.includes(id)) return;
+    setState((s) => ({ ...s, claimed: [...s.claimed, id] }));
+    addXp(daily.challenge.xp);
+  }
+
+
 
   return (
     <AppShell>
