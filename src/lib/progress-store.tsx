@@ -43,6 +43,7 @@ export type AppState = {
   dailyExercises: number;
   dailyReviews: number;
   dailyConversations: number;
+  dailyWords: number;
   reviewSessions: number;
 };
 
@@ -92,6 +93,7 @@ export const defaultState: AppState = {
   dailyExercises: 0,
   dailyReviews: 0,
   dailyConversations: 0,
+  dailyWords: 0,
   reviewSessions: 0,
 };
 
@@ -135,6 +137,7 @@ function rollDates(parsed: AppState): AppState {
     next.dailyExercises = 0;
     next.dailyReviews = 0;
     next.dailyConversations = 0;
+    next.dailyWords = 0;
     next.claimed = (next.claimed ?? []).filter((c) => !c.startsWith("d:"));
   }
   if (next.weekStart !== weekStartOf()) {
