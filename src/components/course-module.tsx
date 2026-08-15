@@ -6,7 +6,7 @@ import { useProgress } from "@/lib/progress-store";
 import { speakSpanish } from "@/lib/speech";
 import type { CourseSituation } from "@/lib/courses";
 
-function PhraseRow({ es, pt, tip, variant }: { es: string; pt: string; tip?: string; variant: "latino" | "espanha" }) {
+function PhraseRow({ es, pt, tip, variant }: { es: string; pt: string; tip?: string | undefined; variant: "latino" | "espanha" }) {
   return (
     <li className="flex items-start justify-between gap-3 rounded-xl bg-secondary/50 px-3 py-2">
       <span>
@@ -95,7 +95,7 @@ export function CourseModule({
       <section className="shadow-soft mt-5 rounded-3xl border border-border bg-card p-6">
         <h3 className="font-display text-lg font-semibold">Simulação interativa</h3>
         <p className="mt-1 text-sm text-muted-foreground">
-          <span className="font-medium text-foreground">Missão:</span> {active.mission ?? active.simulation.mission}
+          <span className="font-medium text-foreground">Missão:</span> {active.simulation.mission}
         </p>
         {!simulating ? (
           <Button
