@@ -1,12 +1,14 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { BookOpen, Clock, Flame, Languages, Play, Target, Trophy } from "lucide-react";
+import { BookOpen, Briefcase, Clock, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LEVELS, TRACK_LABEL } from "@/lib/course-data";
+import { challengeClaimId, challengeStatus } from "@/lib/daily-challenge";
 import { useProgress, usePlan } from "@/lib/progress-store";
+
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -28,7 +30,7 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
-  const { state, hydrated } = useProgress();
+  const { state, hydrated, userId, authEmail, addXp, setState } = useProgress();
   const { next, percent, plan } = usePlan();
   const navigate = useNavigate();
 
@@ -38,6 +40,16 @@ function HomePage() {
 
   const levelName = LEVELS.find((l) => l.id === state.profile.level)?.name ?? "";
   const goalPercent = Math.min(100, Math.round((state.minutesToday / state.profile.minutesPerDay) * 100));
+  const daily = challengeStatus(state);
+
+  function claimDaily() {
+    const id = challengeClaimId();
+    if (state.claimed.includes(id)) return;
+    setState((s) => ({ ...s, claimed: [...s.claimed, id] }));
+    addXp(daily.challenge.xp);
+  }
+
+
 
   return (
     <AppShell>
@@ -68,6 +80,91 @@ function HomePage() {
           </span>
         </div>
       </section>
+
+      {hydrated && !userId ? (
+        <section className="shadow-soft mt-5 rounded-3xl border border-primary/40 bg-card p-6">
+          <h2 className="font-display flex items-center gap-2 text-lg font-semibold">
+            <LogIn className="h-5 w-5 text-primary" /> Entre na sua conta
+          </h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Faça login com e-mail ou Google para salvar XP, sequência, aulas e vocabulário na nuvem e continuar em
+            qualquer aparelho.
+          </p>
+          <div className="mt-4 flex flex-wrap gap-2">
+            <Button onClick={() => navigate({ to: "/entrar" })}>Entrar ou criar conta</Button>
+            <Button variant="outline" onClick={() => navigate({ to: "/comecar" })}>
+              Fazer o teste de nivelamento
+            </Button>
+          </div>
+        </section>
+      ) : (
+        hydrated && (
+          <p className="mt-3 text-xs text-muted-foreground">
+            Progresso sincronizado na nuvem{authEmail ? ` · ${authEmail}` : ""}.
+          </p>
+        )
+      )}
+
+      <section className="shadow-soft bg-sun/10 mt-5 rounded-3xl border border-primary/30 p-6">
+        <div className="flex flex-wrap items-start justify-between gap-3">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Desafio do dia</p>
+            <h2 className="font-display mt-1 text-xl font-semibold">
+              {daily.challenge.emoji} {daily.challenge.title}
+            </h2>
+            <p className="text-sm text-muted-foreground">{daily.challenge.description}</p>
+          </div>
+          <span className="rounded-full bg-secondary px-3 py-1 text-xs font-semibold text-secondary-foreground">
+            +{daily.challenge.xp} XP
+          </span>
+        </div>
+        <div className="mt-4 h-2.5 w-full overflow-hidden rounded-full bg-muted">
+          <div className="bg-sun h-full transition-all" style={{ width: `${daily.percent}%` }} />
+        </div>
+        <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
+          <span className="text-xs text-muted-foreground">
+            {daily.current}/{daily.challenge.target} concluído
+          </span>
+          {daily.claimed ? (
+            <span className="text-sm font-semibold text-success">Recompensa resgatada ✔</span>
+          ) : daily.done ? (
+            <Button size="sm" onClick={claimDaily}>
+              Resgatar {daily.challenge.xp} XP
+            </Button>
+          ) : (
+            <Button size="sm" variant="outline" onClick={() => navigate({ to: daily.challenge.to })}>
+              {daily.challenge.ctaLabel}
+            </Button>
+          )}
+        </div>
+      </section>
+
+      <section className="mt-5 grid gap-3 sm:grid-cols-2">
+        <Link
+          to="/viagens"
+          className="shadow-soft rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
+        >
+          <p className="font-display flex items-center gap-2 text-base font-semibold">
+            <Plane className="h-4 w-4 text-primary" /> Espanhol para Viajar
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Aeroporto, hotel, táxi, restaurante e emergências com simulações
+          </p>
+        </Link>
+        <Link
+          to="/profissional"
+          className="shadow-soft rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
+        >
+          <p className="font-display flex items-center gap-2 text-base font-semibold">
+            <Briefcase className="h-4 w-4 text-primary" /> Espanhol Profissional
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Entrevistas, reuniões, e-mails, negociação e atendimento
+          </p>
+        </Link>
+      </section>
+
+
 
       {next && (
         <section className="shadow-soft mt-5 rounded-3xl border border-border bg-card p-6">

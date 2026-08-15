@@ -47,6 +47,7 @@ function VocabularioPage() {
     setState((s) => ({
       ...s,
       xp: s.xp + (quality === "facil" ? 6 : quality === "dificil" ? 4 : 2),
+      dailyWords: (s.dailyWords ?? 0) + (quality === "esqueci" ? 0 : 1),
       srs: { ...s.srs, [card.id]: reviewCard(s.srs[card.id], quality) },
       learnedWords:
         quality === "esqueci" ? s.learnedWords : Array.from(new Set([...s.learnedWords, card.es])),
