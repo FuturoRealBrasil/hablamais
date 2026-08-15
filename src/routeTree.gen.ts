@@ -19,6 +19,7 @@ import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
 import { Route as RevisaoRouteImport } from './routes/revisao'
 import { Route as ViagensRouteImport } from './routes/viagens'
@@ -76,6 +77,11 @@ const PerfilRoute = PerfilRouteImport.update({
   path: '/perfil',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProfissionalRoute = ProfissionalRouteImport.update({
+  id: '/profissional',
+  path: '/profissional',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PronunciaRoute = PronunciaRouteImport.update({
   id: '/pronuncia',
   path: '/pronuncia',
@@ -118,6 +124,7 @@ export interface FileRoutesByFullPath {
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
+  '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
   '/revisao': typeof RevisaoRoute
   '/viagens': typeof ViagensRoute
@@ -136,6 +143,7 @@ export interface FileRoutesByTo {
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
+  '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
   '/revisao': typeof RevisaoRoute
   '/viagens': typeof ViagensRoute
@@ -155,6 +163,7 @@ export interface FileRoutesById {
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
+  '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
   '/revisao': typeof RevisaoRoute
   '/viagens': typeof ViagensRoute
@@ -175,6 +184,7 @@ export interface FileRouteTypes {
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
+    | '/profissional'
     | '/pronuncia'
     | '/revisao'
     | '/viagens'
@@ -193,6 +203,7 @@ export interface FileRouteTypes {
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
+    | '/profissional'
     | '/pronuncia'
     | '/revisao'
     | '/viagens'
@@ -211,6 +222,7 @@ export interface FileRouteTypes {
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
+    | '/profissional'
     | '/pronuncia'
     | '/revisao'
     | '/viagens'
@@ -230,6 +242,7 @@ export interface RootRouteChildren {
   GramaticaRoute: typeof GramaticaRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
+  ProfissionalRoute: typeof ProfissionalRoute
   PronunciaRoute: typeof PronunciaRoute
   RevisaoRoute: typeof RevisaoRoute
   ViagensRoute: typeof ViagensRoute
@@ -310,6 +323,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/profissional': {
+      id: '/profissional'
+      path: '/profissional'
+      fullPath: '/profissional'
+      preLoaderRoute: typeof ProfissionalRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/pronuncia': {
       id: '/pronuncia'
       path: '/pronuncia'
@@ -366,6 +386,7 @@ const rootRouteChildren: RootRouteChildren = {
   GramaticaRoute: GramaticaRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
+  ProfissionalRoute: ProfissionalRoute,
   PronunciaRoute: PronunciaRoute,
   RevisaoRoute: RevisaoRoute,
   ViagensRoute: ViagensRoute,
