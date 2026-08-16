@@ -14,13 +14,17 @@ import { Route as AulasRouteImport } from './routes/aulas'
 import { Route as ComecarRouteImport } from './routes/comecar'
 import { Route as ConquistasRouteImport } from './routes/conquistas'
 import { Route as ConversarRouteImport } from './routes/conversar'
+import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
+import { Route as PlanoRouteImport } from './routes/plano'
+import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
+import { Route as RelatorioRouteImport } from './routes/relatorio'
 import { Route as RevisaoRouteImport } from './routes/revisao'
 import { Route as ViagensRouteImport } from './routes/viagens'
 import { Route as VocabularioRouteImport } from './routes/vocabulario'
@@ -52,6 +56,11 @@ const ConversarRoute = ConversarRouteImport.update({
   path: '/conversar',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DicionarioRoute = DicionarioRouteImport.update({
+  id: '/dicionario',
+  path: '/dicionario',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EntrarRoute = EntrarRouteImport.update({
   id: '/entrar',
   path: '/entrar',
@@ -77,6 +86,16 @@ const PerfilRoute = PerfilRouteImport.update({
   path: '/perfil',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PlanoRoute = PlanoRouteImport.update({
+  id: '/plano',
+  path: '/plano',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProfessorRoute = ProfessorRouteImport.update({
+  id: '/professor',
+  path: '/professor',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfissionalRoute = ProfissionalRouteImport.update({
   id: '/profissional',
   path: '/profissional',
@@ -85,6 +104,11 @@ const ProfissionalRoute = ProfissionalRouteImport.update({
 const PronunciaRoute = PronunciaRouteImport.update({
   id: '/pronuncia',
   path: '/pronuncia',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RelatorioRoute = RelatorioRouteImport.update({
+  id: '/relatorio',
+  path: '/relatorio',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RevisaoRoute = RevisaoRouteImport.update({
@@ -119,13 +143,17 @@ export interface FileRoutesByFullPath {
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
+  '/dicionario': typeof DicionarioRoute
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
+  '/plano': typeof PlanoRoute
+  '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
+  '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
@@ -138,13 +166,17 @@ export interface FileRoutesByTo {
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
+  '/dicionario': typeof DicionarioRoute
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
+  '/plano': typeof PlanoRoute
+  '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
+  '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
@@ -158,13 +190,17 @@ export interface FileRoutesById {
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
+  '/dicionario': typeof DicionarioRoute
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
+  '/plano': typeof PlanoRoute
+  '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
+  '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
@@ -179,13 +215,17 @@ export interface FileRouteTypes {
     | '/comecar'
     | '/conquistas'
     | '/conversar'
+    | '/dicionario'
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
+    | '/plano'
+    | '/professor'
     | '/profissional'
     | '/pronuncia'
+    | '/relatorio'
     | '/revisao'
     | '/viagens'
     | '/vocabulario'
@@ -198,13 +238,17 @@ export interface FileRouteTypes {
     | '/comecar'
     | '/conquistas'
     | '/conversar'
+    | '/dicionario'
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
+    | '/plano'
+    | '/professor'
     | '/profissional'
     | '/pronuncia'
+    | '/relatorio'
     | '/revisao'
     | '/viagens'
     | '/vocabulario'
@@ -217,13 +261,17 @@ export interface FileRouteTypes {
     | '/comecar'
     | '/conquistas'
     | '/conversar'
+    | '/dicionario'
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
     | '/nivelamento'
     | '/perfil'
+    | '/plano'
+    | '/professor'
     | '/profissional'
     | '/pronuncia'
+    | '/relatorio'
     | '/revisao'
     | '/viagens'
     | '/vocabulario'
@@ -237,13 +285,17 @@ export interface RootRouteChildren {
   ComecarRoute: typeof ComecarRoute
   ConquistasRoute: typeof ConquistasRoute
   ConversarRoute: typeof ConversarRoute
+  DicionarioRoute: typeof DicionarioRoute
   EntrarRoute: typeof EntrarRoute
   ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
+  PlanoRoute: typeof PlanoRoute
+  ProfessorRoute: typeof ProfessorRoute
   ProfissionalRoute: typeof ProfissionalRoute
   PronunciaRoute: typeof PronunciaRoute
+  RelatorioRoute: typeof RelatorioRoute
   RevisaoRoute: typeof RevisaoRoute
   ViagensRoute: typeof ViagensRoute
   VocabularioRoute: typeof VocabularioRoute
@@ -288,6 +340,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ConversarRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/dicionario': {
+      id: '/dicionario'
+      path: '/dicionario'
+      fullPath: '/dicionario'
+      preLoaderRoute: typeof DicionarioRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/entrar': {
       id: '/entrar'
       path: '/entrar'
@@ -323,6 +382,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PerfilRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/plano': {
+      id: '/plano'
+      path: '/plano'
+      fullPath: '/plano'
+      preLoaderRoute: typeof PlanoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/professor': {
+      id: '/professor'
+      path: '/professor'
+      fullPath: '/professor'
+      preLoaderRoute: typeof ProfessorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/profissional': {
       id: '/profissional'
       path: '/profissional'
@@ -335,6 +408,13 @@ declare module '@tanstack/react-router' {
       path: '/pronuncia'
       fullPath: '/pronuncia'
       preLoaderRoute: typeof PronunciaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/relatorio': {
+      id: '/relatorio'
+      path: '/relatorio'
+      fullPath: '/relatorio'
+      preLoaderRoute: typeof RelatorioRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/revisao': {
@@ -381,13 +461,17 @@ const rootRouteChildren: RootRouteChildren = {
   ComecarRoute: ComecarRoute,
   ConquistasRoute: ConquistasRoute,
   ConversarRoute: ConversarRoute,
+  DicionarioRoute: DicionarioRoute,
   EntrarRoute: EntrarRoute,
   ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
+  PlanoRoute: PlanoRoute,
+  ProfessorRoute: ProfessorRoute,
   ProfissionalRoute: ProfissionalRoute,
   PronunciaRoute: PronunciaRoute,
+  RelatorioRoute: RelatorioRoute,
   RevisaoRoute: RevisaoRoute,
   ViagensRoute: ViagensRoute,
   VocabularioRoute: VocabularioRoute,

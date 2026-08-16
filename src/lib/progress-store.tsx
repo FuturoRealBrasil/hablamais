@@ -45,6 +45,9 @@ export type AppState = {
   dailyConversations: number;
   dailyWords: number;
   reviewSessions: number;
+  xpLog: Record<string, number>;
+  minutesLog: Record<string, number>;
+  planMinutes: number;
 };
 
 export function weekStartOf(date = new Date()) {
@@ -95,6 +98,9 @@ export const defaultState: AppState = {
   dailyConversations: 0,
   dailyWords: 0,
   reviewSessions: 0,
+  xpLog: {},
+  minutesLog: {},
+  planMinutes: 0,
 };
 
 type Ctx = {
@@ -148,6 +154,12 @@ function rollDates(parsed: AppState): AppState {
   return next;
 }
 
+function mergeLogs(a: Record<string, number> = {}, b: Record<string, number> = {}) {
+  const out: Record<string, number> = { ...a };
+  for (const [k, v] of Object.entries(b)) out[k] = Math.max(out[k] ?? 0, v);
+  return out;
+}
+
 /** A nuvem é a fonte de verdade quando tem mais progresso; senão mantém o local. */
 function mergeStates(local: AppState, cloud: AppState): AppState {
   const base = cloud.xp >= local.xp ? cloud : local;
@@ -161,6 +173,8 @@ function mergeStates(local: AppState, cloud: AppState): AppState {
     learnedWords: Array.from(new Set([...local.learnedWords, ...cloud.learnedWords])),
     grammarDone: Array.from(new Set([...(local.grammarDone ?? []), ...(cloud.grammarDone ?? [])])),
     srs: { ...local.srs, ...cloud.srs },
+    xpLog: mergeLogs(local.xpLog, cloud.xpLog),
+    minutesLog: mergeLogs(local.minutesLog, cloud.minutesLog),
     profile: base.profile.name || base.profile.email ? base.profile : other.profile,
   };
 }
@@ -304,6 +318,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
             : [...s.completedLessons, lessonId],
           learnedWords: Array.from(new Set([...s.learnedWords, ...words])),
           history: [{ lessonId, title, accuracy, date: day }, ...s.history].slice(0, 12),
+          xpLog: { ...(s.xpLog ?? {}), [day]: ((s.xpLog ?? {})[day] ?? 0) + xp },
+          minutesLog: { ...(s.minutesLog ?? {}), [day]: ((s.minutesLog ?? {})[day] ?? 0) + minutes },
         };
       });
     },
@@ -334,6 +350,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           weekStart: weekStartOf(),
           weeklyXp: (sameWeek ? s.weeklyXp : 0) + xp,
           weeklyMinutes: (sameWeek ? s.weeklyMinutes : 0) + minutes,
+          xpLog: { ...(s.xpLog ?? {}), [day]: ((s.xpLog ?? {})[day] ?? 0) + xp },
+          minutesLog: { ...(s.minutesLog ?? {}), [day]: ((s.minutesLog ?? {})[day] ?? 0) + minutes },
         };
       });
     },
