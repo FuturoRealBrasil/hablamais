@@ -1,5 +1,5 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { BookOpen, Briefcase, Dumbbell, GraduationCap, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, Plane, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
+import { BarChart3, BookMarked, BookOpen, Briefcase, CalendarClock, Dumbbell, GraduationCap, HelpCircle, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, Plane, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { useProgress } from "@/lib/progress-store";
@@ -27,6 +27,10 @@ const NAV = [
   { to: "/exercicios", label: "Exercícios", icon: Dumbbell },
   { to: "/revisao", label: "Revisão", icon: Sparkles },
   { to: "/conversar", label: "Conversar", icon: MessagesSquare },
+  { to: "/professor", label: "Professor", icon: HelpCircle },
+  { to: "/dicionario", label: "Dicionário", icon: BookMarked },
+  { to: "/plano", label: "Plano", icon: CalendarClock },
+  { to: "/relatorio", label: "Relatório", icon: BarChart3 },
   { to: "/viagens", label: "Viagens", icon: Plane },
   { to: "/profissional", label: "Trabalho", icon: Briefcase },
   { to: "/conquistas", label: "Conquistas", icon: Trophy },

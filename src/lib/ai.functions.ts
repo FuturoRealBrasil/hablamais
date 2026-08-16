@@ -104,3 +104,159 @@ Responda SOMENTE com JSON válido no formato:
       return FALLBACK;
     }
   });
+
+/* ---------------- Dicionário ---------------- */
+
+const DictInput = z.object({
+  term: z.string().min(1).max(60),
+  variant: z.enum(["latino", "espanha"]),
+});
+
+export type DictEntry = {
+  word: string;
+  translation: string;
+  phonetic: string;
+  wordClass: string;
+  gender: string;
+  meanings: { pt: string; note: string }[];
+  examples: { es: string; pt: string }[];
+  synonyms: string[];
+  antonyms: string[];
+  phrases: { es: string; pt: string }[];
+  falseFriendPt: string;
+  notFound: boolean;
+};
+
+const DICT_FALLBACK: DictEntry = {
+  word: "",
+  translation: "",
+  phonetic: "",
+  wordClass: "",
+  gender: "",
+  meanings: [],
+  examples: [],
+  synonyms: [],
+  antonyms: [],
+  phrases: [],
+  falseFriendPt: "",
+  notFound: true,
+};
+
+export const dictionaryLookup = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => DictInput.parse(input))
+  .handler(async ({ data }): Promise<DictEntry> => {
+    const key = process.env["LOVABLE_API_KEY"];
+    if (!key) throw new Error("Missing LOVABLE_API_KEY");
+
+    const accent = data.variant === "espanha" ? "espanhol da Espanha" : "espanhol latino-americano";
+    const system = `Você é um dicionário espanhol-português para brasileiros (${accent}).
+Receberá uma palavra ou expressão em espanhol OU em português. Se vier em português, traga o equivalente em espanhol como "word".
+"phonetic" é a pronúncia figurada para brasileiros (ex: "rre-loRR"). "gender" é o artigo/gênero quando substantivo, senão "".
+"falseFriendPt" avisa se é falso cognato com o português (senão "").
+Responda SOMENTE JSON válido:
+{"word":"","translation":"","phonetic":"","wordClass":"substantivo|verbo|adjetivo|advérbio|expressão|...","gender":"","meanings":[{"pt":"","note":""}],"examples":[{"es":"","pt":""}],"synonyms":[""],"antonyms":[""],"phrases":[{"es":"","pt":""}],"falseFriendPt":"","notFound":false}
+Traga 3 exemplos, 4 sinônimos, 3 antônimos (vazio se não existirem) e 3 frases úteis do dia a dia. Se a palavra não existir em espanhol nem em português, "notFound": true.`;
+
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "fetch" },
+      body: JSON.stringify({
+        model: "google/gemini-3.6-flash",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: data.term },
+        ],
+      }),
+    });
+
+    if (res.status === 429) throw new Error("RATE_LIMIT");
+    if (res.status === 402) throw new Error("NO_CREDITS");
+    if (!res.ok) return { ...DICT_FALLBACK, word: data.term };
+
+    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    const content = json.choices?.[0]?.message?.content;
+    if (!content) return { ...DICT_FALLBACK, word: data.term };
+    try {
+      const p = JSON.parse(content) as Partial<DictEntry>;
+      return {
+        word: p.word || data.term,
+        translation: p.translation || "",
+        phonetic: p.phonetic || "",
+        wordClass: p.wordClass || "",
+        gender: p.gender || "",
+        meanings: Array.isArray(p.meanings) ? p.meanings.slice(0, 5) : [],
+        examples: Array.isArray(p.examples) ? p.examples.slice(0, 4) : [],
+        synonyms: Array.isArray(p.synonyms) ? p.synonyms.slice(0, 6) : [],
+        antonyms: Array.isArray(p.antonyms) ? p.antonyms.slice(0, 6) : [],
+        phrases: Array.isArray(p.phrases) ? p.phrases.slice(0, 4) : [],
+        falseFriendPt: p.falseFriendPt || "",
+        notFound: Boolean(p.notFound),
+      };
+    } catch {
+      return { ...DICT_FALLBACK, word: data.term };
+    }
+  });
+
+/* ---------------- Pergunte ao Professor ---------------- */
+
+const DoubtInput = z.object({
+  question: z.string().min(2).max(600),
+  level: z.string().min(2).max(2),
+  variant: z.enum(["latino", "espanha"]),
+});
+
+export type DoubtAnswer = {
+  titlePt: string;
+  explanationPt: string;
+  keyPointsPt: string[];
+  examples: { es: string; pt: string }[];
+  exercises: { question: string; options: string[]; answerIndex: number; explanationPt: string }[];
+  tipPt: string;
+};
+
+export const askTeacher = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => DoubtInput.parse(input))
+  .handler(async ({ data }): Promise<DoubtAnswer> => {
+    const key = process.env["LOVABLE_API_KEY"];
+    if (!key) throw new Error("Missing LOVABLE_API_KEY");
+
+    const accent = data.variant === "espanha" ? "espanhol da Espanha" : "espanhol latino-americano";
+    const system = `Você é "Profe", professor de espanhol (${accent}) para brasileiros de nível ${data.level}.
+Responda a dúvida do aluno EM PORTUGUÊS, de forma simples e direta, com comparações português x espanhol quando ajudar.
+Crie 3 exercícios de múltipla escolha (4 alternativas) relacionados à dúvida, com explicação da resposta em português.
+Responda SOMENTE JSON válido:
+{"titlePt":"","explanationPt":"","keyPointsPt":[""],"examples":[{"es":"","pt":""}],"exercises":[{"question":"","options":["","","",""],"answerIndex":0,"explanationPt":""}],"tipPt":""}`;
+
+    const res = await fetch("https://ai.gateway.lovable.dev/v1/chat/completions", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Lovable-API-Key": key, "X-Lovable-AIG-SDK": "fetch" },
+      body: JSON.stringify({
+        model: "google/gemini-3.6-flash",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content: data.question },
+        ],
+      }),
+    });
+
+    if (res.status === 429) throw new Error("RATE_LIMIT");
+    if (res.status === 402) throw new Error("NO_CREDITS");
+    if (!res.ok) throw new Error("AI_ERROR");
+
+    const json = (await res.json()) as { choices?: { message?: { content?: string } }[] };
+    const content = json.choices?.[0]?.message?.content;
+    if (!content) throw new Error("AI_ERROR");
+    const p = JSON.parse(content) as Partial<DoubtAnswer>;
+    return {
+      titlePt: p.titlePt || "Resposta do professor",
+      explanationPt: p.explanationPt || "",
+      keyPointsPt: Array.isArray(p.keyPointsPt) ? p.keyPointsPt.slice(0, 6) : [],
+      examples: Array.isArray(p.examples) ? p.examples.slice(0, 6) : [],
+      exercises: Array.isArray(p.exercises)
+        ? p.exercises.filter((e) => Array.isArray(e?.options) && e.options.length >= 2).slice(0, 4)
+        : [],
+      tipPt: p.tipPt || "",
+    };
+  });

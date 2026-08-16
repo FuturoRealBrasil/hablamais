@@ -210,6 +210,10 @@ function HomePage() {
           { to: "/exercicios", title: "Exercícios", text: "10 formatos com correção imediata" },
           { to: "/revisao", title: "Revisão Inteligente", text: "Sessão montada pelos seus pontos fracos" },
           { to: "/conquistas", title: "Conquistas & Ranking", text: "Missões, medalhas e metas semanais" },
+          { to: "/professor", title: "Pergunte ao Professor", text: "Tire dúvidas com explicação e exercícios" },
+          { to: "/dicionario", title: "Dicionário", text: "Tradução, pronúncia, sinônimos e frases" },
+          { to: "/plano", title: "Plano de estudos", text: "Rotina automática pelo seu tempo diário" },
+          { to: "/relatorio", title: "Relatório", text: "Evolução por semana, mês e total" },
         ].map((c) => (
           <Link
             key={c.to}
