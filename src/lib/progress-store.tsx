@@ -110,6 +110,15 @@ export const defaultState: AppState = {
   xpLog: {},
   minutesLog: {},
   planMinutes: 0,
+  certificates: {},
+  reminders: {
+    enabled: false,
+    times: ["19:00"],
+    frequency: "diario",
+    types: { aula: true, conquista: true, revisao: true },
+    lastFired: null,
+  },
+  subscription: { plan: "free", since: null, until: null },
 };
 
 type Ctx = {
