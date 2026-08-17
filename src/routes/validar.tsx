@@ -7,11 +7,11 @@ import { Input } from "@/components/ui/input";
 import { LEVELS } from "@/lib/course-data";
 import { verifyCode } from "@/lib/certificates";
 
-type Search = { c?: string };
+type Search = { c: string };
 
 export const Route = createFileRoute("/validar")({
   validateSearch: (search: Record<string, unknown>): Search => ({
-    c: typeof search.c === "string" ? search.c : undefined,
+    c: typeof search["c"] === "string" ? (search["c"] as string) : "",
   }),
   head: () => ({
     meta: [

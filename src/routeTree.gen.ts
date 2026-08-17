@@ -28,6 +28,7 @@ import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
 import { Route as RelatorioRouteImport } from './routes/relatorio'
 import { Route as RevisaoRouteImport } from './routes/revisao'
+import { Route as ValidarRouteImport } from './routes/validar'
 import { Route as ViagensRouteImport } from './routes/viagens'
 import { Route as VocabularioRouteImport } from './routes/vocabulario'
 import { Route as AulaLessonIdRouteImport } from './routes/aula.$lessonId'
@@ -128,6 +129,11 @@ const RevisaoRoute = RevisaoRouteImport.update({
   path: '/revisao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ValidarRoute = ValidarRouteImport.update({
+  id: '/validar',
+  path: '/validar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ViagensRoute = ViagensRouteImport.update({
   id: '/viagens',
   path: '/viagens',
@@ -169,6 +175,7 @@ export interface FileRoutesByFullPath {
   '/pronuncia': typeof PronunciaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
+  '/validar': typeof ValidarRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
@@ -194,6 +201,7 @@ export interface FileRoutesByTo {
   '/pronuncia': typeof PronunciaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
+  '/validar': typeof ValidarRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
@@ -220,6 +228,7 @@ export interface FileRoutesById {
   '/pronuncia': typeof PronunciaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
+  '/validar': typeof ValidarRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/pronuncia'
     | '/relatorio'
     | '/revisao'
+    | '/validar'
     | '/viagens'
     | '/vocabulario'
     | '/aula/$lessonId'
@@ -272,6 +282,7 @@ export interface FileRouteTypes {
     | '/pronuncia'
     | '/relatorio'
     | '/revisao'
+    | '/validar'
     | '/viagens'
     | '/vocabulario'
     | '/aula/$lessonId'
@@ -297,6 +308,7 @@ export interface FileRouteTypes {
     | '/pronuncia'
     | '/relatorio'
     | '/revisao'
+    | '/validar'
     | '/viagens'
     | '/vocabulario'
     | '/aula/$lessonId'
@@ -323,6 +335,7 @@ export interface RootRouteChildren {
   PronunciaRoute: typeof PronunciaRoute
   RelatorioRoute: typeof RelatorioRoute
   RevisaoRoute: typeof RevisaoRoute
+  ValidarRoute: typeof ValidarRoute
   ViagensRoute: typeof ViagensRoute
   VocabularioRoute: typeof VocabularioRoute
   AulaLessonIdRoute: typeof AulaLessonIdRoute
@@ -464,6 +477,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RevisaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/validar': {
+      id: '/validar'
+      path: '/validar'
+      fullPath: '/validar'
+      preLoaderRoute: typeof ValidarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/viagens': {
       id: '/viagens'
       path: '/viagens'
@@ -515,6 +535,7 @@ const rootRouteChildren: RootRouteChildren = {
   PronunciaRoute: PronunciaRoute,
   RelatorioRoute: RelatorioRoute,
   RevisaoRoute: RevisaoRoute,
+  ValidarRoute: ValidarRoute,
   ViagensRoute: ViagensRoute,
   VocabularioRoute: VocabularioRoute,
   AulaLessonIdRoute: AulaLessonIdRoute,
