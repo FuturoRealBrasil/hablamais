@@ -24,8 +24,8 @@ export function Logo({ compact = false }: { compact?: boolean }) {
 
 const NAV = [
   { to: "/", label: "Início", icon: Home },
-  { to: "/aulas", label: "Aulas", icon: BookOpen },
-  { to: "/exercicios", label: "Exercícios", icon: Dumbbell },
+  { to: "/aulas", label: "Curso", icon: BookOpen },
+  { to: "/exercicios", label: "Praticar", icon: Dumbbell },
   { to: "/revisao", label: "Revisão", icon: Sparkles },
   { to: "/conversar", label: "Conversar", icon: MessagesSquare },
   { to: "/professor", label: "Professor", icon: HelpCircle },
@@ -35,15 +35,23 @@ const NAV = [
   { to: "/viagens", label: "Viagens", icon: Plane },
   { to: "/profissional", label: "Trabalho", icon: Briefcase },
   { to: "/conquistas", label: "Conquistas", icon: Trophy },
+  { to: "/certificados", label: "Certificados", icon: Award },
   { to: "/pronuncia", label: "Pronúncia", icon: Mic },
   { to: "/vocabulario", label: "Vocabulário", icon: Layers },
   { to: "/gramatica", label: "Gramática", icon: SpellCheck },
   { to: "/nivelamento", label: "Nível", icon: GraduationCap },
+  { to: "/lembretes", label: "Lembretes", icon: Bell },
+  { to: "/premium", label: "Premium", icon: Crown },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
-const MOBILE_KEYS = ["/", "/aulas", "/exercicios", "/revisao", "/conquistas", "/perfil"] as string[];
-const MOBILE_NAV = NAV.filter((item) => MOBILE_KEYS.includes(item.to));
+const MOBILE_NAV = [
+  { to: "/", label: "Início", icon: Home },
+  { to: "/aulas", label: "Curso", icon: BookOpen },
+  { to: "/exercicios", label: "Praticar", icon: Dumbbell },
+  { to: "/conversar", label: "Conversar", icon: MessagesSquare },
+  { to: "/perfil", label: "Perfil", icon: User },
+] as const;
 
 
 export function AccountButton() {
