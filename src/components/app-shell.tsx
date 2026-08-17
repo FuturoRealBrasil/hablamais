@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { BarChart3, BookMarked, BookOpen, Briefcase, CalendarClock, Dumbbell, GraduationCap, HelpCircle, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, Plane, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
+import { Award, BarChart3, Bell, BookMarked, BookOpen, Briefcase, CalendarClock, Crown, Dumbbell, GraduationCap, HelpCircle, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, Plane, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { ReminderRunner } from "@/components/reminder-runner";
 import { useProgress } from "@/lib/progress-store";
 
 
@@ -23,8 +24,8 @@ export function Logo({ compact = false }: { compact?: boolean }) {
 
 const NAV = [
   { to: "/", label: "Início", icon: Home },
-  { to: "/aulas", label: "Aulas", icon: BookOpen },
-  { to: "/exercicios", label: "Exercícios", icon: Dumbbell },
+  { to: "/aulas", label: "Curso", icon: BookOpen },
+  { to: "/exercicios", label: "Praticar", icon: Dumbbell },
   { to: "/revisao", label: "Revisão", icon: Sparkles },
   { to: "/conversar", label: "Conversar", icon: MessagesSquare },
   { to: "/professor", label: "Professor", icon: HelpCircle },
@@ -34,15 +35,23 @@ const NAV = [
   { to: "/viagens", label: "Viagens", icon: Plane },
   { to: "/profissional", label: "Trabalho", icon: Briefcase },
   { to: "/conquistas", label: "Conquistas", icon: Trophy },
+  { to: "/certificados", label: "Certificados", icon: Award },
   { to: "/pronuncia", label: "Pronúncia", icon: Mic },
   { to: "/vocabulario", label: "Vocabulário", icon: Layers },
   { to: "/gramatica", label: "Gramática", icon: SpellCheck },
   { to: "/nivelamento", label: "Nível", icon: GraduationCap },
+  { to: "/lembretes", label: "Lembretes", icon: Bell },
+  { to: "/premium", label: "Premium", icon: Crown },
   { to: "/perfil", label: "Perfil", icon: User },
 ] as const;
 
-const MOBILE_KEYS = ["/", "/aulas", "/exercicios", "/revisao", "/conquistas", "/perfil"] as string[];
-const MOBILE_NAV = NAV.filter((item) => MOBILE_KEYS.includes(item.to));
+const MOBILE_NAV = [
+  { to: "/", label: "Início", icon: Home },
+  { to: "/aulas", label: "Curso", icon: BookOpen },
+  { to: "/exercicios", label: "Praticar", icon: Dumbbell },
+  { to: "/conversar", label: "Conversar", icon: MessagesSquare },
+  { to: "/perfil", label: "Perfil", icon: User },
+] as const;
 
 
 export function AccountButton() {
@@ -104,15 +113,18 @@ export function AppShell({ children }: { children: ReactNode }) {
 
       <main className="mx-auto max-w-5xl px-4 pb-28 pt-6 sm:pb-14">{children}</main>
 
-      <nav className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 backdrop-blur sm:hidden">
-        <div className="flex items-center justify-around px-2 py-2">
+      <nav
+        className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-background/95 pb-[env(safe-area-inset-bottom)] backdrop-blur sm:hidden"
+        aria-label="Navegação principal"
+      >
+        <div className="flex items-center justify-around px-1 py-1.5">
           {MOBILE_NAV.map(({ to, label, icon: Icon }) => (
             <Link
               key={to}
               to={to}
               activeOptions={{ exact: to === "/" }}
-              activeProps={{ className: "text-primary" }}
-              className="flex flex-1 flex-col items-center gap-1 rounded-lg py-1 text-[11px] font-medium text-muted-foreground"
+              activeProps={{ className: "text-primary bg-secondary/70" }}
+              className="flex flex-1 flex-col items-center gap-0.5 rounded-xl py-1.5 text-[11px] font-medium text-muted-foreground transition-colors"
             >
               <Icon className="h-5 w-5" />
               {label}
@@ -120,6 +132,8 @@ export function AppShell({ children }: { children: ReactNode }) {
           ))}
         </div>
       </nav>
+      <ReminderRunner />
     </div>
+
   );
 }

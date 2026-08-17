@@ -1,11 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { BookOpen, Briefcase, Clock, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
+import { Award, BookOpen, Briefcase, Clock, Crown, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LEVELS, TRACK_LABEL } from "@/lib/course-data";
+import { premiumLabel } from "@/lib/premium";
 import { challengeClaimId, challengeStatus } from "@/lib/daily-challenge";
 import { useProgress, usePlan } from "@/lib/progress-store";
 
@@ -164,6 +165,30 @@ function HomePage() {
         </Link>
       </section>
 
+      <section className="mt-3 grid gap-3 sm:grid-cols-2">
+        <Link
+          to="/certificados"
+          className="shadow-soft rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
+        >
+          <p className="font-display flex items-center gap-2 text-base font-semibold">
+            <Award className="h-4 w-4 text-primary" /> Certificados
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Conclua um nível e emita o certificado com código e QR Code
+          </p>
+        </Link>
+        <Link
+          to="/premium"
+          className="shadow-soft rounded-2xl border border-primary/40 bg-card p-4 transition-colors hover:border-primary"
+        >
+          <p className="font-display flex items-center gap-2 text-base font-semibold">
+            <Crown className="h-4 w-4 text-primary" /> {premiumLabel(state)}
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Curso completo A1–C2, IA ilimitada, certificados e relatórios
+          </p>
+        </Link>
+      </section>
 
 
       {next && (

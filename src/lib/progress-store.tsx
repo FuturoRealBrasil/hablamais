@@ -48,6 +48,15 @@ export type AppState = {
   xpLog: Record<string, number>;
   minutesLog: Record<string, number>;
   planMinutes: number;
+  certificates: Partial<Record<Level, { code: string; date: string; hours: number }>>;
+  reminders: {
+    enabled: boolean;
+    times: string[];
+    frequency: "diario" | "dias-uteis" | "semanal";
+    types: { aula: boolean; conquista: boolean; revisao: boolean };
+    lastFired: string | null;
+  };
+  subscription: { plan: "free" | "mensal" | "trimestral" | "anual"; since: string | null; until: string | null };
 };
 
 export function weekStartOf(date = new Date()) {
@@ -101,6 +110,15 @@ export const defaultState: AppState = {
   xpLog: {},
   minutesLog: {},
   planMinutes: 0,
+  certificates: {},
+  reminders: {
+    enabled: false,
+    times: ["19:00"],
+    frequency: "diario",
+    types: { aula: true, conquista: true, revisao: true },
+    lastFired: null,
+  },
+  subscription: { plan: "free", since: null, until: null },
 };
 
 type Ctx = {
@@ -176,6 +194,10 @@ function mergeStates(local: AppState, cloud: AppState): AppState {
     xpLog: mergeLogs(local.xpLog, cloud.xpLog),
     minutesLog: mergeLogs(local.minutesLog, cloud.minutesLog),
     profile: base.profile.name || base.profile.email ? base.profile : other.profile,
+    certificates: { ...(other.certificates ?? {}), ...(base.certificates ?? {}) },
+    reminders: base.reminders ?? other.reminders ?? defaultState.reminders,
+    subscription:
+      (cloud.subscription?.plan ?? "free") !== "free" ? cloud.subscription : (local.subscription ?? defaultState.subscription),
   };
 }
 

@@ -3,6 +3,7 @@ import { Flame, GraduationCap, Languages, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { LEVELS } from "@/lib/course-data";
+import { premiumLabel } from "@/lib/premium";
 import { useProgress, usePlan } from "@/lib/progress-store";
 
 export const Route = createFileRoute("/perfil")({
@@ -82,6 +83,16 @@ function PerfilPage() {
             ))}
           </div>
         )}
+      </section>
+
+      <section className="shadow-soft mt-5 grid gap-3 rounded-3xl border border-border bg-card p-6 sm:grid-cols-3">
+        <Button variant="outline" onClick={() => navigate({ to: "/certificados" })}>
+          Meus certificados
+        </Button>
+        <Button variant="outline" onClick={() => navigate({ to: "/lembretes" })}>
+          Lembretes
+        </Button>
+        <Button onClick={() => navigate({ to: "/premium" })}>Plano: {premiumLabel(state)}</Button>
       </section>
 
       <div className="mt-6 flex flex-wrap gap-3">

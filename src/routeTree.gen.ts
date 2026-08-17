@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AulasRouteImport } from './routes/aulas'
+import { Route as CertificadosRouteImport } from './routes/certificados'
 import { Route as ComecarRouteImport } from './routes/comecar'
 import { Route as ConquistasRouteImport } from './routes/conquistas'
 import { Route as ConversarRouteImport } from './routes/conversar'
@@ -18,14 +19,17 @@ import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
+import { Route as LembretesRouteImport } from './routes/lembretes'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PlanoRouteImport } from './routes/plano'
+import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
 import { Route as RelatorioRouteImport } from './routes/relatorio'
 import { Route as RevisaoRouteImport } from './routes/revisao'
+import { Route as ValidarRouteImport } from './routes/validar'
 import { Route as ViagensRouteImport } from './routes/viagens'
 import { Route as VocabularioRouteImport } from './routes/vocabulario'
 import { Route as AulaLessonIdRouteImport } from './routes/aula.$lessonId'
@@ -39,6 +43,11 @@ const IndexRoute = IndexRouteImport.update({
 const AulasRoute = AulasRouteImport.update({
   id: '/aulas',
   path: '/aulas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificadosRoute = CertificadosRouteImport.update({
+  id: '/certificados',
+  path: '/certificados',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComecarRoute = ComecarRouteImport.update({
@@ -76,6 +85,11 @@ const GramaticaRoute = GramaticaRouteImport.update({
   path: '/gramatica',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LembretesRoute = LembretesRouteImport.update({
+  id: '/lembretes',
+  path: '/lembretes',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NivelamentoRoute = NivelamentoRouteImport.update({
   id: '/nivelamento',
   path: '/nivelamento',
@@ -89,6 +103,11 @@ const PerfilRoute = PerfilRouteImport.update({
 const PlanoRoute = PlanoRouteImport.update({
   id: '/plano',
   path: '/plano',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PremiumRoute = PremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProfessorRoute = ProfessorRouteImport.update({
@@ -116,6 +135,11 @@ const RevisaoRoute = RevisaoRouteImport.update({
   path: '/revisao',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ValidarRoute = ValidarRouteImport.update({
+  id: '/validar',
+  path: '/validar',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ViagensRoute = ViagensRouteImport.update({
   id: '/viagens',
   path: '/viagens',
@@ -140,6 +164,7 @@ const ApiPublicTranscribeRoute = ApiPublicTranscribeRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
+  '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
@@ -147,14 +172,17 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
+  '/lembretes': typeof LembretesRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
+  '/premium': typeof PremiumRoute
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
+  '/validar': typeof ValidarRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
@@ -163,6 +191,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
+  '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
@@ -170,14 +199,17 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
+  '/lembretes': typeof LembretesRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
+  '/premium': typeof PremiumRoute
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
+  '/validar': typeof ValidarRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
@@ -187,6 +219,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
+  '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
@@ -194,14 +227,17 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
+  '/lembretes': typeof LembretesRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
+  '/premium': typeof PremiumRoute
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
+  '/validar': typeof ValidarRoute
   '/viagens': typeof ViagensRoute
   '/vocabulario': typeof VocabularioRoute
   '/aula/$lessonId': typeof AulaLessonIdRoute
@@ -212,6 +248,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aulas'
+    | '/certificados'
     | '/comecar'
     | '/conquistas'
     | '/conversar'
@@ -219,14 +256,17 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
+    | '/lembretes'
     | '/nivelamento'
     | '/perfil'
     | '/plano'
+    | '/premium'
     | '/professor'
     | '/profissional'
     | '/pronuncia'
     | '/relatorio'
     | '/revisao'
+    | '/validar'
     | '/viagens'
     | '/vocabulario'
     | '/aula/$lessonId'
@@ -235,6 +275,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/aulas'
+    | '/certificados'
     | '/comecar'
     | '/conquistas'
     | '/conversar'
@@ -242,14 +283,17 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
+    | '/lembretes'
     | '/nivelamento'
     | '/perfil'
     | '/plano'
+    | '/premium'
     | '/professor'
     | '/profissional'
     | '/pronuncia'
     | '/relatorio'
     | '/revisao'
+    | '/validar'
     | '/viagens'
     | '/vocabulario'
     | '/aula/$lessonId'
@@ -258,6 +302,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/aulas'
+    | '/certificados'
     | '/comecar'
     | '/conquistas'
     | '/conversar'
@@ -265,14 +310,17 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
+    | '/lembretes'
     | '/nivelamento'
     | '/perfil'
     | '/plano'
+    | '/premium'
     | '/professor'
     | '/profissional'
     | '/pronuncia'
     | '/relatorio'
     | '/revisao'
+    | '/validar'
     | '/viagens'
     | '/vocabulario'
     | '/aula/$lessonId'
@@ -282,6 +330,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AulasRoute: typeof AulasRoute
+  CertificadosRoute: typeof CertificadosRoute
   ComecarRoute: typeof ComecarRoute
   ConquistasRoute: typeof ConquistasRoute
   ConversarRoute: typeof ConversarRoute
@@ -289,14 +338,17 @@ export interface RootRouteChildren {
   EntrarRoute: typeof EntrarRoute
   ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
+  LembretesRoute: typeof LembretesRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
   PlanoRoute: typeof PlanoRoute
+  PremiumRoute: typeof PremiumRoute
   ProfessorRoute: typeof ProfessorRoute
   ProfissionalRoute: typeof ProfissionalRoute
   PronunciaRoute: typeof PronunciaRoute
   RelatorioRoute: typeof RelatorioRoute
   RevisaoRoute: typeof RevisaoRoute
+  ValidarRoute: typeof ValidarRoute
   ViagensRoute: typeof ViagensRoute
   VocabularioRoute: typeof VocabularioRoute
   AulaLessonIdRoute: typeof AulaLessonIdRoute
@@ -317,6 +369,13 @@ declare module '@tanstack/react-router' {
       path: '/aulas'
       fullPath: '/aulas'
       preLoaderRoute: typeof AulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificados': {
+      id: '/certificados'
+      path: '/certificados'
+      fullPath: '/certificados'
+      preLoaderRoute: typeof CertificadosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/comecar': {
@@ -368,6 +427,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GramaticaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/lembretes': {
+      id: '/lembretes'
+      path: '/lembretes'
+      fullPath: '/lembretes'
+      preLoaderRoute: typeof LembretesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/nivelamento': {
       id: '/nivelamento'
       path: '/nivelamento'
@@ -387,6 +453,13 @@ declare module '@tanstack/react-router' {
       path: '/plano'
       fullPath: '/plano'
       preLoaderRoute: typeof PlanoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/premium': {
+      id: '/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof PremiumRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/professor': {
@@ -424,6 +497,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RevisaoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/validar': {
+      id: '/validar'
+      path: '/validar'
+      fullPath: '/validar'
+      preLoaderRoute: typeof ValidarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/viagens': {
       id: '/viagens'
       path: '/viagens'
@@ -458,6 +538,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AulasRoute: AulasRoute,
+  CertificadosRoute: CertificadosRoute,
   ComecarRoute: ComecarRoute,
   ConquistasRoute: ConquistasRoute,
   ConversarRoute: ConversarRoute,
@@ -465,14 +546,17 @@ const rootRouteChildren: RootRouteChildren = {
   EntrarRoute: EntrarRoute,
   ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
+  LembretesRoute: LembretesRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
   PlanoRoute: PlanoRoute,
+  PremiumRoute: PremiumRoute,
   ProfessorRoute: ProfessorRoute,
   ProfissionalRoute: ProfissionalRoute,
   PronunciaRoute: PronunciaRoute,
   RelatorioRoute: RelatorioRoute,
   RevisaoRoute: RevisaoRoute,
+  ValidarRoute: ValidarRoute,
   ViagensRoute: ViagensRoute,
   VocabularioRoute: VocabularioRoute,
   AulaLessonIdRoute: AulaLessonIdRoute,
