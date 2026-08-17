@@ -1,7 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { BarChart3, BookMarked, BookOpen, Briefcase, CalendarClock, Dumbbell, GraduationCap, HelpCircle, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, Plane, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
+import { Award, BarChart3, Bell, BookMarked, BookOpen, Briefcase, CalendarClock, Crown, Dumbbell, GraduationCap, HelpCircle, Home, Layers, LogIn, LogOut, MessagesSquare, Mic, Plane, SpellCheck, Sparkles, Trophy, User } from "lucide-react";
 import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
+import { ReminderRunner } from "@/components/reminder-runner";
 import { useProgress } from "@/lib/progress-store";
 
 
