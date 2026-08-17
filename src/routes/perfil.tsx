@@ -84,6 +84,16 @@ function PerfilPage() {
         )}
       </section>
 
+      <section className="shadow-soft mt-5 grid gap-3 rounded-3xl border border-border bg-card p-6 sm:grid-cols-3">
+        <Button variant="outline" onClick={() => navigate({ to: "/certificados" })}>
+          Meus certificados
+        </Button>
+        <Button variant="outline" onClick={() => navigate({ to: "/lembretes" })}>
+          Lembretes
+        </Button>
+        <Button onClick={() => navigate({ to: "/premium" })}>Plano: {premiumLabel(state)}</Button>
+      </section>
+
       <div className="mt-6 flex flex-wrap gap-3">
         <Button variant="outline" onClick={() => navigate({ to: "/comecar" })}>
           Refazer teste de nivelamento
