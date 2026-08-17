@@ -194,6 +194,10 @@ function mergeStates(local: AppState, cloud: AppState): AppState {
     xpLog: mergeLogs(local.xpLog, cloud.xpLog),
     minutesLog: mergeLogs(local.minutesLog, cloud.minutesLog),
     profile: base.profile.name || base.profile.email ? base.profile : other.profile,
+    certificates: { ...(other.certificates ?? {}), ...(base.certificates ?? {}) },
+    reminders: base.reminders ?? other.reminders ?? defaultState.reminders,
+    subscription:
+      (cloud.subscription?.plan ?? "free") !== "free" ? cloud.subscription : (local.subscription ?? defaultState.subscription),
   };
 }
 
