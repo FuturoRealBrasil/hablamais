@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AulasRouteImport } from './routes/aulas'
+import { Route as CertificadosRouteImport } from './routes/certificados'
 import { Route as ComecarRouteImport } from './routes/comecar'
 import { Route as ConquistasRouteImport } from './routes/conquistas'
 import { Route as ConversarRouteImport } from './routes/conversar'
@@ -39,6 +40,11 @@ const IndexRoute = IndexRouteImport.update({
 const AulasRoute = AulasRouteImport.update({
   id: '/aulas',
   path: '/aulas',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CertificadosRoute = CertificadosRouteImport.update({
+  id: '/certificados',
+  path: '/certificados',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ComecarRoute = ComecarRouteImport.update({
@@ -140,6 +146,7 @@ const ApiPublicTranscribeRoute = ApiPublicTranscribeRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
+  '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
@@ -163,6 +170,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
+  '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
@@ -187,6 +195,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/aulas': typeof AulasRoute
+  '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
   '/conquistas': typeof ConquistasRoute
   '/conversar': typeof ConversarRoute
@@ -212,6 +221,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/aulas'
+    | '/certificados'
     | '/comecar'
     | '/conquistas'
     | '/conversar'
@@ -235,6 +245,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/aulas'
+    | '/certificados'
     | '/comecar'
     | '/conquistas'
     | '/conversar'
@@ -258,6 +269,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/aulas'
+    | '/certificados'
     | '/comecar'
     | '/conquistas'
     | '/conversar'
@@ -282,6 +294,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AulasRoute: typeof AulasRoute
+  CertificadosRoute: typeof CertificadosRoute
   ComecarRoute: typeof ComecarRoute
   ConquistasRoute: typeof ConquistasRoute
   ConversarRoute: typeof ConversarRoute
@@ -317,6 +330,13 @@ declare module '@tanstack/react-router' {
       path: '/aulas'
       fullPath: '/aulas'
       preLoaderRoute: typeof AulasRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/certificados': {
+      id: '/certificados'
+      path: '/certificados'
+      fullPath: '/certificados'
+      preLoaderRoute: typeof CertificadosRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/comecar': {
@@ -458,6 +478,7 @@ declare module '@tanstack/react-router' {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AulasRoute: AulasRoute,
+  CertificadosRoute: CertificadosRoute,
   ComecarRoute: ComecarRoute,
   ConquistasRoute: ConquistasRoute,
   ConversarRoute: ConversarRoute,
