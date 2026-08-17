@@ -1,11 +1,12 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { BookOpen, Briefcase, Clock, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
+import { Award, BookOpen, Briefcase, Clock, Crown, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { LEVELS, TRACK_LABEL } from "@/lib/course-data";
+import { premiumLabel } from "@/lib/premium";
 import { challengeClaimId, challengeStatus } from "@/lib/daily-challenge";
 import { useProgress, usePlan } from "@/lib/progress-store";
 
