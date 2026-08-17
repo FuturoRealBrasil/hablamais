@@ -19,6 +19,7 @@ import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as EntrarRouteImport } from './routes/entrar'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
+import { Route as LembretesRouteImport } from './routes/lembretes'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PlanoRouteImport } from './routes/plano'
@@ -82,6 +83,11 @@ const ExerciciosRoute = ExerciciosRouteImport.update({
 const GramaticaRoute = GramaticaRouteImport.update({
   id: '/gramatica',
   path: '/gramatica',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LembretesRoute = LembretesRouteImport.update({
+  id: '/lembretes',
+  path: '/lembretes',
   getParentRoute: () => rootRouteImport,
 } as any)
 const NivelamentoRoute = NivelamentoRouteImport.update({
@@ -166,6 +172,7 @@ export interface FileRoutesByFullPath {
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
+  '/lembretes': typeof LembretesRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
@@ -192,6 +199,7 @@ export interface FileRoutesByTo {
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
+  '/lembretes': typeof LembretesRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
@@ -219,6 +227,7 @@ export interface FileRoutesById {
   '/entrar': typeof EntrarRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
+  '/lembretes': typeof LembretesRoute
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
@@ -247,6 +256,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
+    | '/lembretes'
     | '/nivelamento'
     | '/perfil'
     | '/plano'
@@ -273,6 +283,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
+    | '/lembretes'
     | '/nivelamento'
     | '/perfil'
     | '/plano'
@@ -299,6 +310,7 @@ export interface FileRouteTypes {
     | '/entrar'
     | '/exercicios'
     | '/gramatica'
+    | '/lembretes'
     | '/nivelamento'
     | '/perfil'
     | '/plano'
@@ -326,6 +338,7 @@ export interface RootRouteChildren {
   EntrarRoute: typeof EntrarRoute
   ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
+  LembretesRoute: typeof LembretesRoute
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
   PlanoRoute: typeof PlanoRoute
@@ -412,6 +425,13 @@ declare module '@tanstack/react-router' {
       path: '/gramatica'
       fullPath: '/gramatica'
       preLoaderRoute: typeof GramaticaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lembretes': {
+      id: '/lembretes'
+      path: '/lembretes'
+      fullPath: '/lembretes'
+      preLoaderRoute: typeof LembretesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/nivelamento': {
@@ -526,6 +546,7 @@ const rootRouteChildren: RootRouteChildren = {
   EntrarRoute: EntrarRoute,
   ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
+  LembretesRoute: LembretesRoute,
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
   PlanoRoute: PlanoRoute,
