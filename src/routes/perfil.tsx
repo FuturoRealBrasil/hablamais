@@ -3,6 +3,7 @@ import { Flame, GraduationCap, Languages, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { Button } from "@/components/ui/button";
 import { LEVELS } from "@/lib/course-data";
+import { premiumLabel } from "@/lib/premium";
 import { useProgress, usePlan } from "@/lib/progress-store";
 
 export const Route = createFileRoute("/perfil")({
