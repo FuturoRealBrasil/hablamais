@@ -36,7 +36,9 @@ export function buildCode(level: Level, date: string) {
 export function verifyCode(code: string): { valid: boolean; level?: Level; date?: string } {
   const parts = code.trim().toUpperCase().split("-");
   if (parts.length !== 4 || parts[0] !== "HB") return { valid: false };
-  const [, level, compact, sum] = parts;
+  const level = parts[1] ?? "";
+  const compact = parts[2] ?? "";
+  const sum = parts[3] ?? "";
   if (!LEVELS.some((l) => l.id === level)) return { valid: false };
   if (!/^\d{6}$/.test(compact)) return { valid: false };
   if (hash4(`${level}|${compact}|habla+`) !== sum) return { valid: false };
