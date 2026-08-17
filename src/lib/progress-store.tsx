@@ -48,6 +48,15 @@ export type AppState = {
   xpLog: Record<string, number>;
   minutesLog: Record<string, number>;
   planMinutes: number;
+  certificates: Partial<Record<Level, { code: string; date: string; hours: number }>>;
+  reminders: {
+    enabled: boolean;
+    times: string[];
+    frequency: "diario" | "dias-uteis" | "semanal";
+    types: { aula: boolean; conquista: boolean; revisao: boolean };
+    lastFired: string | null;
+  };
+  subscription: { plan: "free" | "mensal" | "trimestral" | "anual"; since: string | null; until: string | null };
 };
 
 export function weekStartOf(date = new Date()) {
