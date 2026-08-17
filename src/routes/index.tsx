@@ -164,6 +164,30 @@ function HomePage() {
         </Link>
       </section>
 
+      <section className="mt-3 grid gap-3 sm:grid-cols-2">
+        <Link
+          to="/certificados"
+          className="shadow-soft rounded-2xl border border-border bg-card p-4 transition-colors hover:border-primary"
+        >
+          <p className="font-display flex items-center gap-2 text-base font-semibold">
+            <Award className="h-4 w-4 text-primary" /> Certificados
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Conclua um nível e emita o certificado com código e QR Code
+          </p>
+        </Link>
+        <Link
+          to="/premium"
+          className="shadow-soft rounded-2xl border border-primary/40 bg-card p-4 transition-colors hover:border-primary"
+        >
+          <p className="font-display flex items-center gap-2 text-base font-semibold">
+            <Crown className="h-4 w-4 text-primary" /> {premiumLabel(state)}
+          </p>
+          <p className="mt-0.5 text-xs text-muted-foreground">
+            Curso completo A1–C2, IA ilimitada, certificados e relatórios
+          </p>
+        </Link>
+      </section>
 
 
       {next && (
