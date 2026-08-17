@@ -22,6 +22,7 @@ import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as NivelamentoRouteImport } from './routes/nivelamento'
 import { Route as PerfilRouteImport } from './routes/perfil'
 import { Route as PlanoRouteImport } from './routes/plano'
+import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
@@ -97,6 +98,11 @@ const PlanoRoute = PlanoRouteImport.update({
   path: '/plano',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PremiumRoute = PremiumRouteImport.update({
+  id: '/premium',
+  path: '/premium',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ProfessorRoute = ProfessorRouteImport.update({
   id: '/professor',
   path: '/professor',
@@ -157,6 +163,7 @@ export interface FileRoutesByFullPath {
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
+  '/premium': typeof PremiumRoute
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
@@ -181,6 +188,7 @@ export interface FileRoutesByTo {
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
+  '/premium': typeof PremiumRoute
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
@@ -206,6 +214,7 @@ export interface FileRoutesById {
   '/nivelamento': typeof NivelamentoRoute
   '/perfil': typeof PerfilRoute
   '/plano': typeof PlanoRoute
+  '/premium': typeof PremiumRoute
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
@@ -232,6 +241,7 @@ export interface FileRouteTypes {
     | '/nivelamento'
     | '/perfil'
     | '/plano'
+    | '/premium'
     | '/professor'
     | '/profissional'
     | '/pronuncia'
@@ -256,6 +266,7 @@ export interface FileRouteTypes {
     | '/nivelamento'
     | '/perfil'
     | '/plano'
+    | '/premium'
     | '/professor'
     | '/profissional'
     | '/pronuncia'
@@ -280,6 +291,7 @@ export interface FileRouteTypes {
     | '/nivelamento'
     | '/perfil'
     | '/plano'
+    | '/premium'
     | '/professor'
     | '/profissional'
     | '/pronuncia'
@@ -305,6 +317,7 @@ export interface RootRouteChildren {
   NivelamentoRoute: typeof NivelamentoRoute
   PerfilRoute: typeof PerfilRoute
   PlanoRoute: typeof PlanoRoute
+  PremiumRoute: typeof PremiumRoute
   ProfessorRoute: typeof ProfessorRoute
   ProfissionalRoute: typeof ProfissionalRoute
   PronunciaRoute: typeof PronunciaRoute
@@ -409,6 +422,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PlanoRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/premium': {
+      id: '/premium'
+      path: '/premium'
+      fullPath: '/premium'
+      preLoaderRoute: typeof PremiumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/professor': {
       id: '/professor'
       path: '/professor'
@@ -489,6 +509,7 @@ const rootRouteChildren: RootRouteChildren = {
   NivelamentoRoute: NivelamentoRoute,
   PerfilRoute: PerfilRoute,
   PlanoRoute: PlanoRoute,
+  PremiumRoute: PremiumRoute,
   ProfessorRoute: ProfessorRoute,
   ProfissionalRoute: ProfissionalRoute,
   PronunciaRoute: PronunciaRoute,
