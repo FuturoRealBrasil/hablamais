@@ -53,14 +53,9 @@ export function reminderMessage(state: AppState): { kind: ReminderKind; title: s
 }
 
 function badgePercent(state: AppState, badge: (typeof BADGES)[number]) {
-  try {
-    const progress = (badge as unknown as { progress?: (s: AppState) => { current: number; target: number } }).progress;
-    if (!progress) return 0;
-    const { current, target } = progress(state);
-    return target ? Math.min(100, Math.round((current / target) * 100)) : 0;
-  } catch {
-    return 0;
-  }
+  if (badge.earned(state)) return 100;
+  const { current, target } = badge.progress(state);
+  return target ? Math.min(100, Math.round((current / target) * 100)) : 0;
 }
 
 export function canNotify() {
