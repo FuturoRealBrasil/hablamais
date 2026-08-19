@@ -1,15 +1,16 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Award, BookOpen, Briefcase, Clock, Crown, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
+import { Award, BookOpen, Briefcase, Clock, Crown, Flame, Languages, LogIn, Plane, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { LEVELS, TRACK_LABEL } from "@/lib/course-data";
+import { LEVELS } from "@/lib/course-data";
 import { premiumLabel } from "@/lib/premium";
 import { challengeClaimId, challengeStatus } from "@/lib/daily-challenge";
 import { useProgress, usePlan } from "@/lib/progress-store";
 import { InstallAppCard } from "@/lib/pwa-install";
+import { NextStepCard } from "@/components/next-step";
 
 
 
@@ -34,7 +35,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { state, hydrated, userId, authEmail, addXp, setState } = useProgress();
-  const { next, percent, plan } = usePlan();
+  const { percent, plan } = usePlan();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -107,6 +108,10 @@ function HomePage() {
           </p>
         )
       )}
+
+      <div className="mt-5">
+        <NextStepCard />
+      </div>
 
       <div className="mt-5">
         <InstallAppCard />
@@ -198,28 +203,6 @@ function HomePage() {
         </Link>
       </section>
 
-
-      {next && (
-        <section className="shadow-soft mt-5 rounded-3xl border border-border bg-card p-6">
-          <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Próxima aula</p>
-          <div className="mt-2 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-            <div>
-              <h2 className="text-xl font-semibold">{next.title}</h2>
-              <p className="text-sm text-muted-foreground">{next.subtitle}</p>
-              <div className="mt-2 flex flex-wrap gap-2 text-xs text-muted-foreground">
-                <span className="rounded-full bg-secondary px-2.5 py-1 font-semibold text-secondary-foreground">
-                  {TRACK_LABEL[next.track]}
-                </span>
-                <span className="rounded-full bg-secondary px-2.5 py-1">{next.minutes} min</span>
-                <span className="rounded-full bg-secondary px-2.5 py-1">+{next.xp} XP</span>
-              </div>
-            </div>
-            <Button size="lg" onClick={() => navigate({ to: "/aula/$lessonId", params: { lessonId: next.id } })}>
-              <Play className="mr-2 h-4 w-4" /> Continuar estudando
-            </Button>
-          </div>
-        </section>
-      )}
 
       <section className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard icon={Trophy} label="Pontuação" value={`${state.xp} pts`} hint="XP acumulado no app" />
