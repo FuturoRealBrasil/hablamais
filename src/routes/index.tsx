@@ -1,6 +1,6 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect } from "react";
-import { Award, BookOpen, Briefcase, Clock, Crown, Flame, Languages, LogIn, Play, Plane, Target, Trophy } from "lucide-react";
+import { Award, BookOpen, Briefcase, Clock, Crown, Flame, Languages, LogIn, Plane, Target, Trophy } from "lucide-react";
 import { AppShell } from "@/components/app-shell";
 import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
   const { state, hydrated, userId, authEmail, addXp, setState } = useProgress();
-  const { next, percent, plan } = usePlan();
+  const { percent, plan } = usePlan();
   const navigate = useNavigate();
 
   useEffect(() => {
