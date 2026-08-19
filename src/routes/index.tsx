@@ -5,7 +5,7 @@ import { AppShell } from "@/components/app-shell";
 import { StatCard } from "@/components/stat-card";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { LEVELS, TRACK_LABEL } from "@/lib/course-data";
+import { LEVELS } from "@/lib/course-data";
 import { premiumLabel } from "@/lib/premium";
 import { challengeClaimId, challengeStatus } from "@/lib/daily-challenge";
 import { useProgress, usePlan } from "@/lib/progress-store";
