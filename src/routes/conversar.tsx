@@ -40,7 +40,8 @@ function ConversarPage() {
         </span>
         <h1 className="mt-2 text-2xl font-semibold">Converse com seu Professor de IA</h1>
         <p className="text-sm text-muted-foreground">
-          Escolha uma situação. O professor interpreta o personagem, corrige seus erros e explica tudo em português.
+          Escolha uma situação. Toque no microfone e fale em espanhol: o professor entende sua voz, responde em áudio,
+          corrige seus erros e explica tudo em português.
         </p>
       </header>
 
