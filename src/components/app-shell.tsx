@@ -4,14 +4,20 @@ import type { ReactNode } from "react";
 import { Button } from "@/components/ui/button";
 import { ReminderRunner } from "@/components/reminder-runner";
 import { useProgress } from "@/lib/progress-store";
+import hablaLogo from "@/assets/habla-logo.png.asset.json";
+
 
 
 export function Logo({ compact = false }: { compact?: boolean }) {
   return (
     <Link to="/" className="flex items-center gap-2.5">
-      <span className="bg-sun flex h-9 w-9 items-center justify-center rounded-xl text-primary-foreground shadow-lift">
-        <span className="font-display text-lg leading-none">H</span>
-      </span>
+      <img
+        src={hablaLogo.url}
+        alt="Habla+ Espanhol"
+        width={40}
+        height={40}
+        className="shadow-lift h-10 w-10 rounded-xl object-cover"
+      />
       {!compact && (
         <span className="leading-tight">
           <span className="font-display block text-lg font-semibold">Habla+ Espanhol</span>
@@ -21,6 +27,7 @@ export function Logo({ compact = false }: { compact?: boolean }) {
     </Link>
   );
 }
+
 
 const NAV = [
   { to: "/", label: "Início", icon: Home },

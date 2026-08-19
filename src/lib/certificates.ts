@@ -46,10 +46,14 @@ export function verifyCode(code: string): { valid: boolean; level?: Level; date?
   return { valid: true, level: level as Level, date };
 }
 
+/** Carga horária oficial do nível: mínimo de 400 horas por nível (A1–C2). */
+export const MIN_LEVEL_HOURS = 400;
+
 export function levelHours(level: Level) {
   const minutes = LESSONS.filter((l) => l.level === level).reduce((acc, l) => acc + l.minutes, 0);
-  return Math.max(10, Math.round(minutes / 60) * 10);
+  return Math.max(MIN_LEVEL_HOURS, Math.round(minutes / 60) * 10);
 }
+
 
 export type LevelProgress = {
   level: Level;
