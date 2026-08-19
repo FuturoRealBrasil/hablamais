@@ -17,6 +17,7 @@ import { Route as ConquistasRouteImport } from './routes/conquistas'
 import { Route as ConversarRouteImport } from './routes/conversar'
 import { Route as DicionarioRouteImport } from './routes/dicionario'
 import { Route as EntrarRouteImport } from './routes/entrar'
+import { Route as EsqueciSenhaRouteImport } from './routes/esqueci-senha'
 import { Route as ExerciciosRouteImport } from './routes/exercicios'
 import { Route as GramaticaRouteImport } from './routes/gramatica'
 import { Route as LembretesRouteImport } from './routes/lembretes'
@@ -27,6 +28,7 @@ import { Route as PremiumRouteImport } from './routes/premium'
 import { Route as ProfessorRouteImport } from './routes/professor'
 import { Route as ProfissionalRouteImport } from './routes/profissional'
 import { Route as PronunciaRouteImport } from './routes/pronuncia'
+import { Route as RedefinirSenhaRouteImport } from './routes/redefinir-senha'
 import { Route as RelatorioRouteImport } from './routes/relatorio'
 import { Route as RevisaoRouteImport } from './routes/revisao'
 import { Route as ValidarRouteImport } from './routes/validar'
@@ -73,6 +75,11 @@ const DicionarioRoute = DicionarioRouteImport.update({
 const EntrarRoute = EntrarRouteImport.update({
   id: '/entrar',
   path: '/entrar',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EsqueciSenhaRoute = EsqueciSenhaRouteImport.update({
+  id: '/esqueci-senha',
+  path: '/esqueci-senha',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ExerciciosRoute = ExerciciosRouteImport.update({
@@ -125,6 +132,11 @@ const PronunciaRoute = PronunciaRouteImport.update({
   path: '/pronuncia',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RedefinirSenhaRoute = RedefinirSenhaRouteImport.update({
+  id: '/redefinir-senha',
+  path: '/redefinir-senha',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const RelatorioRoute = RelatorioRouteImport.update({
   id: '/relatorio',
   path: '/relatorio',
@@ -170,6 +182,7 @@ export interface FileRoutesByFullPath {
   '/conversar': typeof ConversarRoute
   '/dicionario': typeof DicionarioRoute
   '/entrar': typeof EntrarRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/lembretes': typeof LembretesRoute
@@ -180,6 +193,7 @@ export interface FileRoutesByFullPath {
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
   '/validar': typeof ValidarRoute
@@ -197,6 +211,7 @@ export interface FileRoutesByTo {
   '/conversar': typeof ConversarRoute
   '/dicionario': typeof DicionarioRoute
   '/entrar': typeof EntrarRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/lembretes': typeof LembretesRoute
@@ -207,6 +222,7 @@ export interface FileRoutesByTo {
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
   '/validar': typeof ValidarRoute
@@ -225,6 +241,7 @@ export interface FileRoutesById {
   '/conversar': typeof ConversarRoute
   '/dicionario': typeof DicionarioRoute
   '/entrar': typeof EntrarRoute
+  '/esqueci-senha': typeof EsqueciSenhaRoute
   '/exercicios': typeof ExerciciosRoute
   '/gramatica': typeof GramaticaRoute
   '/lembretes': typeof LembretesRoute
@@ -235,6 +252,7 @@ export interface FileRoutesById {
   '/professor': typeof ProfessorRoute
   '/profissional': typeof ProfissionalRoute
   '/pronuncia': typeof PronunciaRoute
+  '/redefinir-senha': typeof RedefinirSenhaRoute
   '/relatorio': typeof RelatorioRoute
   '/revisao': typeof RevisaoRoute
   '/validar': typeof ValidarRoute
@@ -254,6 +272,7 @@ export interface FileRouteTypes {
     | '/conversar'
     | '/dicionario'
     | '/entrar'
+    | '/esqueci-senha'
     | '/exercicios'
     | '/gramatica'
     | '/lembretes'
@@ -264,6 +283,7 @@ export interface FileRouteTypes {
     | '/professor'
     | '/profissional'
     | '/pronuncia'
+    | '/redefinir-senha'
     | '/relatorio'
     | '/revisao'
     | '/validar'
@@ -281,6 +301,7 @@ export interface FileRouteTypes {
     | '/conversar'
     | '/dicionario'
     | '/entrar'
+    | '/esqueci-senha'
     | '/exercicios'
     | '/gramatica'
     | '/lembretes'
@@ -291,6 +312,7 @@ export interface FileRouteTypes {
     | '/professor'
     | '/profissional'
     | '/pronuncia'
+    | '/redefinir-senha'
     | '/relatorio'
     | '/revisao'
     | '/validar'
@@ -308,6 +330,7 @@ export interface FileRouteTypes {
     | '/conversar'
     | '/dicionario'
     | '/entrar'
+    | '/esqueci-senha'
     | '/exercicios'
     | '/gramatica'
     | '/lembretes'
@@ -318,6 +341,7 @@ export interface FileRouteTypes {
     | '/professor'
     | '/profissional'
     | '/pronuncia'
+    | '/redefinir-senha'
     | '/relatorio'
     | '/revisao'
     | '/validar'
@@ -336,6 +360,7 @@ export interface RootRouteChildren {
   ConversarRoute: typeof ConversarRoute
   DicionarioRoute: typeof DicionarioRoute
   EntrarRoute: typeof EntrarRoute
+  EsqueciSenhaRoute: typeof EsqueciSenhaRoute
   ExerciciosRoute: typeof ExerciciosRoute
   GramaticaRoute: typeof GramaticaRoute
   LembretesRoute: typeof LembretesRoute
@@ -346,6 +371,7 @@ export interface RootRouteChildren {
   ProfessorRoute: typeof ProfessorRoute
   ProfissionalRoute: typeof ProfissionalRoute
   PronunciaRoute: typeof PronunciaRoute
+  RedefinirSenhaRoute: typeof RedefinirSenhaRoute
   RelatorioRoute: typeof RelatorioRoute
   RevisaoRoute: typeof RevisaoRoute
   ValidarRoute: typeof ValidarRoute
@@ -411,6 +437,13 @@ declare module '@tanstack/react-router' {
       path: '/entrar'
       fullPath: '/entrar'
       preLoaderRoute: typeof EntrarRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/esqueci-senha': {
+      id: '/esqueci-senha'
+      path: '/esqueci-senha'
+      fullPath: '/esqueci-senha'
+      preLoaderRoute: typeof EsqueciSenhaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/exercicios': {
@@ -483,6 +516,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PronunciaRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/redefinir-senha': {
+      id: '/redefinir-senha'
+      path: '/redefinir-senha'
+      fullPath: '/redefinir-senha'
+      preLoaderRoute: typeof RedefinirSenhaRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/relatorio': {
       id: '/relatorio'
       path: '/relatorio'
@@ -544,6 +584,7 @@ const rootRouteChildren: RootRouteChildren = {
   ConversarRoute: ConversarRoute,
   DicionarioRoute: DicionarioRoute,
   EntrarRoute: EntrarRoute,
+  EsqueciSenhaRoute: EsqueciSenhaRoute,
   ExerciciosRoute: ExerciciosRoute,
   GramaticaRoute: GramaticaRoute,
   LembretesRoute: LembretesRoute,
@@ -554,6 +595,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProfessorRoute: ProfessorRoute,
   ProfissionalRoute: ProfissionalRoute,
   PronunciaRoute: PronunciaRoute,
+  RedefinirSenhaRoute: RedefinirSenhaRoute,
   RelatorioRoute: RelatorioRoute,
   RevisaoRoute: RevisaoRoute,
   ValidarRoute: ValidarRoute,
