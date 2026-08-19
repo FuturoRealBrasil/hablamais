@@ -1,11 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { useServerFn } from "@tanstack/react-start";
-import { Loader2, Send, Sparkles, Volume2 } from "lucide-react";
+import { Loader2, Mic, Send, Sparkles, Square, Volume2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { teacherReply, type TeacherTurn } from "@/lib/ai.functions";
 import { useProgress } from "@/lib/progress-store";
 import { speakSpanish } from "@/lib/speech";
+import { startRecording, transcribeBlob, type Recorder } from "@/lib/audio-record";
 
 type Turn = {
   role: "user" | "assistant";
@@ -33,6 +34,9 @@ export function AiChat({
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [recording, setRecording] = useState(false);
+  const [transcribing, setTranscribing] = useState(false);
+  const recorderRef = useRef<Recorder | null>(null);
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -47,8 +51,8 @@ export function AiChat({
   const avg = (k: keyof TeacherTurn["scores"]) =>
     scored.length ? Math.round(scored.reduce((sum, t) => sum + (t.scores?.[k] ?? 0), 0) / scored.length) : 0;
 
-  async function send() {
-    const text = input.trim();
+  async function send(rawText?: string) {
+    const text = (rawText ?? input).trim();
     if (!text || loading) return;
     const next: Turn[] = [...turns, { role: "user", content: text }];
     setTurns(next);
@@ -89,6 +93,44 @@ export function AiChat({
       );
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function startMic() {
+    if (recording || transcribing || loading) return;
+    setError(null);
+    try {
+      if (typeof window !== "undefined" && "speechSynthesis" in window) window.speechSynthesis.cancel();
+      recorderRef.current = await startRecording();
+      setRecording(true);
+    } catch {
+      setError("Não consegui acessar o microfone. Permita o acesso no navegador e tente de novo.");
+    }
+  }
+
+  async function stopMicAndSend() {
+    const rec = recorderRef.current;
+    if (!rec) return;
+    recorderRef.current = null;
+    setRecording(false);
+    setTranscribing(true);
+    try {
+      const blob = await rec.stop();
+      if (blob.size < 4096) {
+        setError("A gravação ficou muito curta. Segure o botão e fale por alguns segundos.");
+        return;
+      }
+      const text = (await transcribeBlob(blob)).trim();
+      if (!text) {
+        setError("Não entendi o áudio. Tente falar mais perto do microfone.");
+        return;
+      }
+      await send(text);
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : "";
+      setError(msg.includes("429") ? "Muitas gravações seguidas — aguarde alguns segundos." : "Não consegui entender seu áudio. Tente gravar novamente.");
+    } finally {
+      setTranscribing(false);
     }
   }
 
@@ -152,6 +194,19 @@ export function AiChat({
             )}
           </div>
         ))}
+        {(recording || transcribing) && (
+          <p className="flex items-center gap-2 text-xs text-primary">
+            {recording ? (
+              <>
+                <span className="h-2 w-2 animate-pulse rounded-full bg-destructive" /> Gravando… toque no quadrado para enviar.
+              </>
+            ) : (
+              <>
+                <Loader2 className="h-4 w-4 animate-spin" /> Transcrevendo seu áudio…
+              </>
+            )}
+          </p>
+        )}
         {loading && (
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
             <Loader2 className="h-4 w-4 animate-spin" /> O professor está pensando…
@@ -177,13 +232,29 @@ export function AiChat({
           void send();
         }}
       >
+        <Button
+          type="button"
+          size="icon"
+          variant={recording ? "destructive" : "secondary"}
+          disabled={loading || transcribing}
+          aria-label={recording ? "Parar gravação e enviar" : "Falar com o professor"}
+          onClick={() => void (recording ? stopMicAndSend() : startMic())}
+        >
+          {transcribing ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : recording ? (
+            <Square className="h-4 w-4" />
+          ) : (
+            <Mic className="h-4 w-4" />
+          )}
+        </Button>
         <Input
           value={input}
           maxLength={400}
-          placeholder="Escreva em espanhol…"
+          placeholder={recording ? "Gravando… fale em espanhol" : transcribing ? "Transcrevendo seu áudio…" : "Escreva ou toque no microfone…"}
           onChange={(e) => setInput(e.target.value)}
         />
-        <Button type="submit" size="icon" disabled={loading || !input.trim()} aria-label="Enviar">
+        <Button type="submit" size="icon" disabled={loading || recording || transcribing || !input.trim()} aria-label="Enviar">
           <Send className="h-4 w-4" />
         </Button>
       </form>
