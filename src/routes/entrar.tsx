@@ -151,12 +151,19 @@ function EntrarPage() {
             {mode === "login" ? "Não tem conta? Criar agora" : "Já tenho conta. Entrar"}
           </button>
 
+          <p className="mt-3 text-center text-sm">
+            <Link to="/esqueci-senha" className="text-primary underline-offset-4 hover:underline">
+              Esqueci minha senha
+            </Link>
+          </p>
+
           <p className="mt-4 text-center text-xs text-muted-foreground">
             Primeira vez por aqui?{" "}
             <Link to="/comecar" className="text-primary underline-offset-4 hover:underline">
               Fazer o teste de nivelamento
             </Link>
           </p>
+
         </div>
       </div>
     </div>
