@@ -39,6 +39,9 @@ const FALLBACK: TeacherTurn = {
 export const teacherReply = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => TeacherInput.parse(input))
   .handler(async ({ data }): Promise<TeacherTurn> => {
+    const { enforceRateLimit } = await import("./rate-limit.server");
+    enforceRateLimit("teacher", 20, 60_000);
+
     const key = process.env["LOVABLE_API_KEY"];
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
@@ -145,6 +148,9 @@ const DICT_FALLBACK: DictEntry = {
 export const dictionaryLookup = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => DictInput.parse(input))
   .handler(async ({ data }): Promise<DictEntry> => {
+    const { enforceRateLimit } = await import("./rate-limit.server");
+    enforceRateLimit("dict", 30, 60_000);
+
     const key = process.env["LOVABLE_API_KEY"];
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
@@ -218,6 +224,9 @@ export type DoubtAnswer = {
 export const askTeacher = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => DoubtInput.parse(input))
   .handler(async ({ data }): Promise<DoubtAnswer> => {
+    const { enforceRateLimit } = await import("./rate-limit.server");
+    enforceRateLimit("doubt", 15, 60_000);
+
     const key = process.env["LOVABLE_API_KEY"];
     if (!key) throw new Error("Missing LOVABLE_API_KEY");
 
