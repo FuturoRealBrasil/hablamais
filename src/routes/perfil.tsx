@@ -25,9 +25,11 @@ export const Route = createFileRoute("/perfil")({
 });
 
 function PerfilPage() {
-  const { state, reset } = useProgress();
+  const { state, reset, userId } = useProgress();
   const { percent } = usePlan();
+  const { isAdmin } = useIsAdmin(userId);
   const navigate = useNavigate();
+
   const levelInfo = LEVELS.find((l) => l.id === state.profile.level);
 
   return (
