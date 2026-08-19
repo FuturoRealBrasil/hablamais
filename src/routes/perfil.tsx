@@ -5,6 +5,9 @@ import { Button } from "@/components/ui/button";
 import { LEVELS } from "@/lib/course-data";
 import { premiumLabel } from "@/lib/premium";
 import { useProgress, usePlan } from "@/lib/progress-store";
+import { InstallAppCard } from "@/lib/pwa-install";
+import { useIsAdmin } from "@/lib/admin";
+
 
 export const Route = createFileRoute("/perfil")({
   head: () => ({
@@ -51,6 +54,17 @@ function PerfilPage() {
         <Info icon={Flame} label="Sequência" value={`${state.streak} dias`} />
         <Info icon={GraduationCap} label="Aulas concluídas" value={`${state.completedLessons.length}`} />
       </div>
+
+      <div className="mt-5">
+        <InstallAppCard />
+      </div>
+
+      {isAdmin && (
+        <Button variant="outline" className="mt-3 w-full" onClick={() => navigate({ to: "/admin" })}>
+          Abrir painel do administrador
+        </Button>
+      )}
+
 
       <section className="shadow-soft mt-5 rounded-3xl border border-border bg-card p-6">
         <h2 className="flex items-center gap-2 text-lg font-semibold">
