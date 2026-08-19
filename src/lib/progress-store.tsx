@@ -207,8 +207,8 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   const [userId, setUserId] = useState<string | null>(null);
   const [authEmail, setAuthEmail] = useState<string | null>(null);
   const [syncing, setSyncing] = useState(false);
+  const [cloudUser, setCloudUser] = useState<string | null>(null); // usuário cujo progresso já foi carregado
   const stateRef = useRef(state);
-  const cloudReady = useRef(false);
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   stateRef.current = state;
@@ -231,8 +231,12 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     async function loadCloud(uid: string) {
       setSyncing(true);
       try {
-        const { data } = await supabase.from("progress").select("state").eq("user_id", uid).maybeSingle();
+        const { data, error } = await supabase.from("progress").select("state").eq("user_id", uid).maybeSingle();
         if (!active) return;
+        if (error) {
+          console.error("[progress] falha ao carregar da nuvem", error);
+          return; // não marca como pronto: evita sobrescrever a nuvem com estado vazio
+        }
         if (data?.state) {
           const cloud = rollDates(data.state as unknown as AppState);
           const merged = mergeStates(stateRef.current, cloud);
@@ -242,27 +246,42 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
           } catch {
             /* ignore */
           }
+        } else {
+          // primeira vez deste usuário: envia o progresso local imediatamente
+          const { error: seedError } = await supabase
+            .from("progress")
+            .upsert(
+              { user_id: uid, state: stateRef.current as unknown as Json, updated_at: new Date().toISOString() },
+              { onConflict: "user_id" },
+            );
+          if (seedError) {
+            console.error("[progress] falha ao criar progresso na nuvem", seedError);
+            return;
+          }
         }
-        cloudReady.current = true;
+        if (active) setCloudUser(uid);
       } finally {
         if (active) setSyncing(false);
       }
     }
 
-    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => {
+    function apply(session: { user?: { id?: string; email?: string | null } } | null) {
       const uid = session?.user?.id ?? null;
       setUserId(uid);
       setAuthEmail(session?.user?.email ?? null);
-      cloudReady.current = false;
-      if (uid) void loadCloud(uid);
-    });
+      if (!uid) {
+        setCloudUser(null);
+        return;
+      }
+      // recarrega apenas quando muda de usuário (ignora refresh de token)
+      setCloudUser((current) => {
+        if (current !== uid) void loadCloud(uid);
+        return current;
+      });
+    }
 
-    void supabase.auth.getSession().then(({ data }) => {
-      const uid = data.session?.user?.id ?? null;
-      setUserId(uid);
-      setAuthEmail(data.session?.user?.email ?? null);
-      if (uid) void loadCloud(uid);
-    });
+    const { data: sub } = supabase.auth.onAuthStateChange((_event, session) => apply(session));
+    void supabase.auth.getSession().then(({ data }) => apply(data.session));
 
     return () => {
       active = false;
@@ -272,7 +291,7 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
 
   // 3) salva na nuvem com debounce
   useEffect(() => {
-    if (!hydrated || !userId || !cloudReady.current) return;
+    if (!hydrated || !userId || cloudUser !== userId) return;
     if (saveTimer.current) clearTimeout(saveTimer.current);
     saveTimer.current = setTimeout(() => {
       void supabase
@@ -280,12 +299,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         .upsert(
           { user_id: userId, state: state as unknown as Json, updated_at: new Date().toISOString() },
           { onConflict: "user_id" },
-        );
+        )
+        .then(({ error }) => {
+          if (error) console.error("[progress] falha ao salvar na nuvem", error);
+        });
     }, 800);
     return () => {
       if (saveTimer.current) clearTimeout(saveTimer.current);
     };
-  }, [state, hydrated, userId]);
+  }, [state, hydrated, userId, cloudUser]);
 
   const setState = useCallback((updater: (s: AppState) => AppState) => {
     setRaw((prev) => {
@@ -300,23 +322,25 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const signOut = useCallback(async () => {
-    if (userId && cloudReady.current) {
-      await supabase
+    if (userId && cloudUser === userId) {
+      const { error } = await supabase
         .from("progress")
         .upsert(
           { user_id: userId, state: stateRef.current as unknown as Json, updated_at: new Date().toISOString() },
           { onConflict: "user_id" },
         );
+      if (error) console.error("[progress] falha ao salvar antes de sair", error);
     }
     await supabase.auth.signOut();
-    cloudReady.current = false;
+    setCloudUser(null);
     try {
       localStorage.removeItem(STORAGE_KEY);
     } catch {
       /* ignore */
     }
     setRaw(defaultState);
-  }, [userId]);
+  }, [userId, cloudUser]);
+
 
 
   const completeLesson: Ctx["completeLesson"] = useCallback(
