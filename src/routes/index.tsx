@@ -9,6 +9,8 @@ import { LEVELS, TRACK_LABEL } from "@/lib/course-data";
 import { premiumLabel } from "@/lib/premium";
 import { challengeClaimId, challengeStatus } from "@/lib/daily-challenge";
 import { useProgress, usePlan } from "@/lib/progress-store";
+import { InstallAppCard } from "@/lib/pwa-install";
+
 
 
 export const Route = createFileRoute("/")({
@@ -105,6 +107,12 @@ function HomePage() {
           </p>
         )
       )}
+
+      <div className="mt-5">
+        <InstallAppCard />
+      </div>
+
+
 
       <section className="shadow-soft bg-sun/10 mt-5 rounded-3xl border border-primary/30 p-6">
         <div className="flex flex-wrap items-start justify-between gap-3">
