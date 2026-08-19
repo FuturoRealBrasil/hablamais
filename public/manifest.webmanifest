@@ -1,0 +1,17 @@
+{
+  "name": "Habla+ Espanhol — Seu Professor de Espanhol com IA",
+  "short_name": "Habla+",
+  "description": "Aprenda espanhol do zero ao avançado com aulas guiadas, conversação com IA, pronúncia e vocabulário.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#ffffff",
+  "theme_color": "#e11d48",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
