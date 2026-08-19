@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AulasRouteImport } from './routes/aulas'
 import { Route as CertificadosRouteImport } from './routes/certificados'
 import { Route as ComecarRouteImport } from './routes/comecar'
@@ -40,6 +41,11 @@ import { Route as ApiPublicTranscribeRouteImport } from './routes/api/public/tra
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AulasRoute = AulasRouteImport.update({
@@ -175,6 +181,7 @@ const ApiPublicTranscribeRoute = ApiPublicTranscribeRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/aulas': typeof AulasRoute
   '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
@@ -204,6 +211,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/aulas': typeof AulasRoute
   '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
@@ -234,6 +242,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/admin': typeof AdminRoute
   '/aulas': typeof AulasRoute
   '/certificados': typeof CertificadosRoute
   '/comecar': typeof ComecarRoute
@@ -265,6 +274,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/aulas'
     | '/certificados'
     | '/comecar'
@@ -294,6 +304,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/admin'
     | '/aulas'
     | '/certificados'
     | '/comecar'
@@ -323,6 +334,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/admin'
     | '/aulas'
     | '/certificados'
     | '/comecar'
@@ -353,6 +365,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AdminRoute: typeof AdminRoute
   AulasRoute: typeof AulasRoute
   CertificadosRoute: typeof CertificadosRoute
   ComecarRoute: typeof ComecarRoute
@@ -388,6 +401,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/aulas': {
@@ -577,6 +597,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AdminRoute: AdminRoute,
   AulasRoute: AulasRoute,
   CertificadosRoute: CertificadosRoute,
   ComecarRoute: ComecarRoute,
