@@ -9,6 +9,14 @@ export const Route = createFileRoute("/api/public/transcribe")({
         const key = process.env["LOVABLE_API_KEY"];
         if (!key) return new Response("Transcrição indisponível", { status: 503 });
 
+        const { allowRequest } = await import("@/lib/rate-limit.server");
+        if (!allowRequest("transcribe", 20, 60_000)) {
+          return new Response("Muitas gravações seguidas — aguarde alguns segundos.", {
+            status: 429,
+            headers: { "retry-after": "30" },
+          });
+        }
+
         let form: FormData;
         try {
           form = await request.formData();
